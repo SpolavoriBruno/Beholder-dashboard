@@ -5,9 +5,9 @@ import { doLogin } from '../../services/AuthService'
 
 function Login() {
     const history = useHistory()
+
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
-
     const [error, setError] = useState()
 
     function onChangeInput(event) {
@@ -21,13 +21,16 @@ function Login() {
     function onSubmit(event) {
         event.preventDefault()
 
-
         doLogin(email, password)
-            .then(() => {
-                history.push("/settings")
+            .then((response) => {
+                if (response) {
+                    localStorage.setItem('token', response.token);
+                    history.push("/dashboard")
+                }
             })
-            .catch(() => {
+            .catch((error) => {
                 setError("Invalid credentials")
+                console.error(error)
             })
     }
 

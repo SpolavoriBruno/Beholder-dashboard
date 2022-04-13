@@ -1,13 +1,19 @@
+import axios from "axios"
 
+const API_URL = process.env.REACT_APP_API_URL
 
-export function doLogin(email, password, remember = false) {
-    return new Promise((resolve, reject)=>{
+export async function doLogin(email, password, remember = false) {
+    const loginUrl = `${API_URL}/login`
+    const response = await axios.post(loginUrl, { email, password })
 
-        if (email && password==="123") {
-            resolve()
-        }
-        else reject()
-    })
+    return response.data
 }
 
-export function doLogout() { }
+export async function doLogout(token) {
+    const logoutUrl = `${API_URL}/logout`
+    const headers = {
+        'authorization': token
+    }
+    const response = await axios.post(logoutUrl, {}, {headers})
+    return response
+ }
