@@ -2,7 +2,7 @@ import React from "react";
 
 function Card(props) {
     return (<React.Fragment>
-        <div className="card card-body border-0 text-center shadow mx-2 px-2 mb-3" style={{ 'max-width': props.width || '24rem' }}>
+        <div className="card card-body border-0 text-center shadow mx-2 px-2 mb-3" style={{ 'maxWidth': props.width || '24rem' }}>
             <h2 className="h5 card-header">{props.title}</h2>
             <div className="card-body">
                 {props.children}
