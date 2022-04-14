@@ -14,6 +14,6 @@ export async function doLogout(token) {
     const headers = {
         'authorization': token
     }
-    const response = await axios.post(logoutUrl, {}, {headers})
+    const response = await axios.post(logoutUrl, {}, { headers })
     return response
- }
+}
