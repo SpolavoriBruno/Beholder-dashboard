@@ -13,7 +13,7 @@ function Routes() {
         return (
             <Route {...rest} render={() => {
                 return localStorage.getItem('token')
-                    ? children
+                    ? <><Menu />{children}</>
                     : <Redirect to='/' />
             }} />
         )
