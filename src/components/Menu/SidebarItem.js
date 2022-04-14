@@ -2,14 +2,14 @@ import { Link } from 'react-router-dom'
 
 
 function SidebarItem(props) {
-    function getClassName(itemName, className) {
-        let cn = window.location.pathname === itemName ? 'nav-item active' : 'nav-item'
-        cn += ` ${className}`
-        return cn
+    function getClassName(itemName) {
+        const componentClass = 'nav-item d-flex justify-content-center '
+
+        return window.location.pathname === itemName ? componentClass + 'active' : componentClass
     }
 
     return (
-        <li className={getClassName(props.to, props.className)}>
+        <li className={getClassName(props.to)}>
             <Link to={props.to} className="nav-link" onClick={props.onClick}>
                 {props.children}
                 <span className="sidebar-text">{props.text}</span>
