@@ -28,8 +28,8 @@ function Sidebar() {
         <nav className='sidebar d-lg-block bg-gray-800 text-white collapse' id='sidebarMenu' data-simplebar="true">
             <div className='sidebar-inner px-4 pt-3'>
                 <ul className='nav flex-column pt-3 pt-md-0'>
-                    <SidebarItem to='/dashboard' className="d-flex justify-content-center">
-                        <img src='/img/favicon/logo-512.png' height={120} width={120} alt="Beholder Logo" />
+                    <SidebarItem to='/#' className="d-flex justify-content-center">
+                        <img src='/img/favicon/logo-192.png' height={120} width={120} alt="Beholder Logo" />
                     </SidebarItem>
                     <SidebarItem to="/dashboard" text="Dashboard">
                         <svg className="icon icon-xs me-2" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" >
