@@ -3,7 +3,7 @@ import { useHistory } from "react-router-dom"
 
 import { getSettings, updateSettings } from "../../services/SettingsService"
 import Card from "./Card"
-
+import Symbols from "./Symbols"
 
 function Settings() {
     const history = useHistory()
@@ -21,7 +21,6 @@ function Settings() {
 
     useEffect(() => {
         const token = localStorage.getItem('token')
-        console.log(token)
         getSettings(token)
             .then(settings => {
                 inputEmail.current.value = settings.email
@@ -78,8 +77,6 @@ function Settings() {
             <div className="row">
                 <div className="col-12">
                     <form onSubmit={onFormSubmit}>
-
-
                         <div className="d-flex justify-content-center flex-wrap flex-md-nowrap">
                             {
                                 error &&
@@ -147,7 +144,11 @@ function Settings() {
                     </form>
                 </div>
             </div>
+            <div className="d-flex justify-content-center">
+                <Symbols />
+            </div>
         </main>
+
     </React.Fragment>)
 }
 

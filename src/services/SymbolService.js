@@ -29,3 +29,13 @@ export async function updateSymbol(symbolData, token) {
     const response = await axios.patch(url, symbolData, { headers });
     return response.data;
 }
+
+export async function syncSymbols(token) {
+    const url = `${API_URL}/symbols/sync`;
+    const headers = {
+        'authorization': token
+    }
+
+    const response = await axios.post(url, {}, { headers });
+    return response.data;
+}
