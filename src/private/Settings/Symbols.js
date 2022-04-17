@@ -2,14 +2,17 @@ import React, { useEffect, useState } from 'react'
 import { useHistory } from 'react-router-dom'
 import { getSymbols, syncSymbols } from '../../services/SymbolService'
 import SymbolRow from './SymbolRow'
-import SelectQuote from '../../components/SelectQuote/SelectQuote'
+import SelectQuote, { filterSymbolsObject, getDefaultQuote } from '../../components/SelectQuote/SelectQuote'
+import SymbolModal from './SymbolModal'
+
 
 function Symbols() {
     const history = useHistory()
     const [symbols, setSymbols] = useState([]);
     const [error, setError] = useState(null);
     const [isSyncing, setIsSyncing] = useState(false);
-    const [quote, setQuote] = useState('BUSD');
+    const [quote, setQuote] = useState(getDefaultQuote());
+    const [editSymbol, setEditSymbol] = useState({})
 
     function onQuoteChange(event) {
         setQuote(event.target.value);
@@ -30,11 +33,11 @@ function Symbols() {
             })
     }
 
-    useEffect(() => {
+    function loadSymbols() {
         const token = localStorage.getItem('token')
         getSymbols(token)
             .then(symbols => {
-                setSymbols(symbols)
+                setSymbols(filterSymbolsObject(symbols, quote))
             })
             .catch(error => {
                 if (error?.response?.status === 401)
@@ -42,7 +45,18 @@ function Symbols() {
                 console.error(error)
                 setError(error.message)
             })
-    }, [history, isSyncing])
+    }
+
+    useEffect(() => {
+        loadSymbols()
+    }, [history, isSyncing, quote])
+
+    function onEditSymbol(event) {
+        const symbol = event.target.id.replace('edit/', '')
+        const symbolObj = symbols.find(s => s.symbol === symbol)
+
+        setEditSymbol(symbolObj)
+    }
 
     return (<React.Fragment>
         {
@@ -75,7 +89,7 @@ function Symbols() {
                                 </tr>
                             </thead>
                             <tbody>
-                                {symbols.map(item => <SymbolRow key={item.symbol} data={item} />)}
+                                {symbols.map(item => <SymbolRow key={item.symbol} data={item} onClick={onEditSymbol} />)}
                             </tbody>
                             <tfoot>
                                 <tr>
@@ -94,6 +108,7 @@ function Symbols() {
                 </div>
             </div>
         </div>
+        <SymbolModal data={editSymbol} onSubmit={loadSymbols} />
     </React.Fragment>)
 }
 
