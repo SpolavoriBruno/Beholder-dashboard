@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 
 /**
  * props?
@@ -10,12 +10,12 @@ function SelectQuote(props) {
     function onQuoteChange(event) {
         props.onChange(event);
         setDefaultQuote(event.target.value);
-        localStorage.setItem("defaultQuote", event.target.value);
+        localStorage.setItem("defaultQuote", defaultQuote);
     }
 
     return (
         <select id="selectQuote" className="form-select" defaultValue={defaultQuote} onChange={onQuoteChange}>
-            <option value="favorites">Favorites</option>
+            <option value="FAVORITES">Favorites</option>
             <option value="BNB">BNB</option>
             <option value="BRL">BRL</option>
             <option value="BTC">BTC</option>
@@ -29,6 +29,15 @@ function SelectQuote(props) {
 export function getDefaultQuote() {
     const quote = localStorage.getItem('defaultQuote')
     return quote ? quote : "BUSD"
+}
+
+export function filterSymbolsObject(symbols, quote) {
+    return symbols.filter(item => {
+        if (quote === "FAVORITES")
+            return item.isFavorite
+        else
+            return item.symbol.endsWith(quote)
+    })
 }
 
 export default SelectQuote;
