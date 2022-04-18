@@ -31,6 +31,10 @@ export function getDefaultQuote() {
     return quote ? quote : "BUSD"
 }
 
+export function filterSymbolsName(symbols, quote) {
+    return filterSymbolsObject(symbols, quote).map(s => s.symbol)
+}
+
 export function filterSymbolsObject(symbols, quote) {
     return symbols.filter(item => {
         if (quote === "FAVORITES")
