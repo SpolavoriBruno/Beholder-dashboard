@@ -12,6 +12,7 @@ function Settings() {
     const inputNewPassword = useRef(null)
     const inputConfirmNewPassword = useRef(null)
     const inputApiUrl = useRef(null)
+    const inputStreamUrl = useRef(null)
     const inputAccessKey = useRef(null)
     const inputSecretKey = useRef(null)
 
@@ -25,6 +26,7 @@ function Settings() {
             .then(settings => {
                 inputEmail.current.value = settings.email
                 inputApiUrl.current.value = settings.apiUrl
+                inputStreamUrl.current.value = settings.streamUrl
                 inputAccessKey.current.value = settings.accessKey
             })
             .catch(error => {
@@ -47,6 +49,7 @@ function Settings() {
             email: inputEmail.current.value,
             password: inputNewPassword.current.value || null,
             apiUrl: inputApiUrl.current.value,
+            streamUrl: inputStreamUrl.current.value,
             accessKey: inputAccessKey.current.value,
             secretKey: inputSecretKey.current.value || null
         }, token)
@@ -119,7 +122,15 @@ function Settings() {
                                     <div className="col-sm-12 mb-3">
                                         <div className="form-group">
                                             <label htmlFor="apiUrl">API URL</label>
-                                            <input ref={inputApiUrl} className="form-control" id="apiUrl" type="text" placeholder="API URL" />
+                                            <input ref={inputApiUrl} className="form-control" id="apiUrl" type="text" placeholder="API URL" required />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className="row">
+                                    <div className="col-sm-12 mb-3">
+                                        <div className="form-group">
+                                            <label htmlFor="streamUrl">STREAM URL</label>
+                                            <input ref={inputStreamUrl} className="form-control" id="streamUrl" type="text" placeholder="STREAM URL" required />
                                         </div>
                                     </div>
                                 </div>
