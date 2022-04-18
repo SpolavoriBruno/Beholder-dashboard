@@ -10,7 +10,7 @@ function SelectQuote(props) {
     function onQuoteChange(event) {
         props.onChange(event);
         setDefaultQuote(event.target.value);
-        localStorage.setItem("defaultQuote", defaultQuote);
+        localStorage.setItem("defaultQuote", event.target.value);
     }
 
     return (
