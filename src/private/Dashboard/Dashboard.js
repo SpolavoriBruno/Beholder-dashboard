@@ -1,9 +1,9 @@
-import React, { useState } from "react";
-import useWebSocket from "react-use-websocket";
+import React, { useState } from "react"
+import useWebSocket from "react-use-websocket"
 
-import MiniTicker from "./MiniTicker/MiniTicker";
-import BookTicker from "./BookTicker/BookTicker";
-import Wallet from "./Wallet/Wallet";
+import MiniTicker from "./MiniTicker/MiniTicker"
+import BookTicker from "./BookTicker/BookTicker"
+import Wallet from "./Wallet/Wallet"
 
 function Dashboard() {
     const [miniTickerState, setMiniTickerState] = useState({})

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react"
 
 import { getSymbols } from "../../../services/SymbolService"
 import SelectQuote, { filterSymbolsName, getDefaultQuote } from "../../../components/SelectQuote/SelectQuote"
-import TickerRow from "./TickerRow";
+import TickerRow from "./TickerRow"
 import '../Dashboard.css'
 
 function MiniTicker(props) {
@@ -60,7 +60,7 @@ function MiniTicker(props) {
                 </div>
             </div>
         </div>
-    </React.Fragment>);
+    </React.Fragment>)
 }
 
 export default MiniTicker

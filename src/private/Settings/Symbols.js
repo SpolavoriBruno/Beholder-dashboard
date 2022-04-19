@@ -8,14 +8,14 @@ import SymbolModal from './SymbolModal'
 
 function Symbols() {
     const history = useHistory()
-    const [symbols, setSymbols] = useState([]);
-    const [error, setError] = useState(null);
-    const [isSyncing, setIsSyncing] = useState(false);
-    const [quote, setQuote] = useState(getDefaultQuote());
+    const [symbols, setSymbols] = useState([])
+    const [error, setError] = useState(null)
+    const [isSyncing, setIsSyncing] = useState(false)
+    const [quote, setQuote] = useState(getDefaultQuote())
     const [editSymbol, setEditSymbol] = useState({})
 
     function onQuoteChange(event) {
-        setQuote(event.target.value);
+        setQuote(event.target.value)
     }
 
     function onSyncClick(event) {

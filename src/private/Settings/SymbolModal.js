@@ -1,5 +1,5 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { updateSymbol } from '../../services/SymbolService';
+import React, { useState, useEffect, useRef } from 'react'
+import { updateSymbol } from '../../services/SymbolService'
 
 /**
  * props:
@@ -8,37 +8,37 @@ import { updateSymbol } from '../../services/SymbolService';
  */
 function SymbolModal(props) {
 
-    const btnClose = useRef('');
-    const [error, setError] = useState('');
-    const [symbol, setSymbol] = useState({});
+    const btnClose = useRef('')
+    const [error, setError] = useState('')
+    const [symbol, setSymbol] = useState({})
 
     useEffect(() => {
-        if (!props.data) return;
-        setSymbol(props.data);
+        if (!props.data) return
+        setSymbol(props.data)
     }, [props.data])
 
     function onInputChange(event) {
-        setSymbol(prevState => ({ ...prevState, [event.target.id]: event.target.value }));
+        setSymbol(prevState => ({ ...prevState, [event.target.id]: event.target.value }))
     }
 
     function getStarFillColor() {
-        return symbol.isFavorite ? "yellow" : "white";
+        return symbol.isFavorite ? "yellow" : "white"
     }
 
     function onFavoriteClick(event) {
-        setSymbol(prevState => ({ ...prevState, isFavorite: !symbol.isFavorite }));
+        setSymbol(prevState => ({ ...prevState, isFavorite: !symbol.isFavorite }))
     }
 
     function onSubmit(event) {
-        event.preventDefault();
-        const token = localStorage.getItem('token');
+        event.preventDefault()
+        const token = localStorage.getItem('token')
         updateSymbol(symbol, token)
             .then(result => {
-                setError('');
-                props.onSubmit({ target: { id: 'symbol', value: symbol } });
-                btnClose.current.click();
+                setError('')
+                props.onSubmit({ target: { id: 'symbol', value: symbol } })
+                btnClose.current.click()
             })
-            .catch(err => setError(err.response ? err.response.data : err.message));
+            .catch(err => setError(err.response ? err.response.data : err.message))
     }
 
     return (
@@ -116,4 +116,4 @@ function SymbolModal(props) {
     )
 }
 
-export default SymbolModal;
+export default SymbolModal

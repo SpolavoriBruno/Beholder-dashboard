@@ -1,4 +1,4 @@
-import React from 'react';
+import React from 'react'
 import { useHistory } from "react-router-dom"
 
 import SidebarItem from "./SidebarItem"
@@ -10,7 +10,7 @@ function Sidebar() {
     const history = useHistory()
 
     function cleanAndRedirect() {
-        localStorage.removeItem('token');
+        localStorage.removeItem('token')
         history.push('/')
     }
 

@@ -57,5 +57,5 @@ export default function Wallet(props) {
                 </div>
             </div>
         </div>
-    </React.Fragment>);
+    </React.Fragment>)
 }

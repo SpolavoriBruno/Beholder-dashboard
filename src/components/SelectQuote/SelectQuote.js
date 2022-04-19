@@ -1,16 +1,16 @@
-import React, { useState } from "react";
+import React, { useState } from "react"
 
 /**
  * props?
  * - onChange
  */
 function SelectQuote(props) {
-    const [defaultQuote, setDefaultQuote] = useState(getDefaultQuote());
+    const [defaultQuote, setDefaultQuote] = useState(getDefaultQuote())
 
     function onQuoteChange(event) {
-        props.onChange(event);
-        setDefaultQuote(event.target.value);
-        localStorage.setItem("defaultQuote", event.target.value);
+        props.onChange(event)
+        setDefaultQuote(event.target.value)
+        localStorage.setItem("defaultQuote", event.target.value)
     }
 
     return (
@@ -44,4 +44,4 @@ export function filterSymbolsObject(symbols, quote) {
     })
 }
 
-export default SelectQuote;
+export default SelectQuote

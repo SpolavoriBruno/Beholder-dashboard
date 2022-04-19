@@ -1,4 +1,4 @@
-import React from "react";
+import React from "react"
 
 /**
  * 
@@ -7,7 +7,7 @@ import React from "react";
  * - onClick 
  */
 function SymbolRow(props) {
-    const { data } = props;
+    const { data } = props
     return (<tr>
         <td className="text-gray-900">
             {data.symbol}
@@ -31,4 +31,4 @@ function SymbolRow(props) {
     </tr>)
 }
 
-export default SymbolRow;
+export default SymbolRow

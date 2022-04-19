@@ -19,18 +19,18 @@ function TickerRow(props) {
     </React.Fragment>), [props.symbol, data.close, data.open, data.high, data.low])
 
     useEffect(() => {
-        if (!props.data) return;
+        if (!props.data) return
 
         if (data.close !== props.data.close)
-            data.close = props.data.close;
+            data.close = props.data.close
         if (data.open !== props.data.open)
-            data.open = props.data.open;
+            data.open = props.data.open
         if (data.high !== props.data.high)
-            data.high = props.data.high;
+            data.high = props.data.high
         if (data.low !== props.data.low)
-            data.low = props.data.low;
+            data.low = props.data.low
 
-        setData(data);
+        setData(data)
 
     }, [props.data])
 
