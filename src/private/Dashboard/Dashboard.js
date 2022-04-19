@@ -4,6 +4,7 @@ import useWebSocket from "react-use-websocket"
 import MiniTicker from "./MiniTicker/MiniTicker"
 import BookTicker from "./BookTicker/BookTicker"
 import Wallet from "./Wallet/Wallet"
+import CandleChart from "./CandleChart"
 
 function Dashboard() {
     const [miniTickerState, setMiniTickerState] = useState({})
@@ -39,6 +40,7 @@ function Dashboard() {
             <div className="d-flex justify-content-center flex-wrap flex-md-nowrap align-items-center py-4">
                 <h1 className="h4">Dashboard</h1>
             </div>
+            <CandleChart symbol="BTCUSDT" />
             <MiniTicker data={miniTickerState} />
             <div className="row">
                 <BookTicker data={bookState} />
