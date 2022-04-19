@@ -4,8 +4,7 @@ import { getSymbols } from "../../../services/SymbolService"
 import BookRow from "./BookRow"
 import "../Dashboard.css"
 
-export default function BookTicker(props) {
-
+function BookTicker(props) {
     const [symbols, setSymbols] = useState([])
     const [quote, setQuote] = useState(getDefaultQuote())
 
@@ -56,5 +55,7 @@ export default function BookTicker(props) {
                 </div>
             </div>
         </div>
-    </React.Fragment>);
+    </React.Fragment>)
 }
+
+export default BookTicker
