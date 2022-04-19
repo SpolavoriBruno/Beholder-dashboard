@@ -6,6 +6,7 @@ import BookTicker from "./BookTicker/BookTicker"
 import Wallet from "./Wallet/Wallet"
 import CandleChart from "./CandleChart"
 import NewOrderButton from "../../components/NewOrder/NewOrderButton"
+import NewOrderModal from "../../components/NewOrder/NewOrderModal"
 
 function Dashboard() {
     const [miniTickerState, setMiniTickerState] = useState({})
@@ -54,6 +55,7 @@ function Dashboard() {
                 <Wallet data={balanceState} />
             </div>
         </main>
+        <NewOrderModal />
     </React.Fragment>)
 }
 
