@@ -1,4 +1,5 @@
 import React, { useRef, useState } from "react"
+import SelectSymbol from "./SelectSymbol"
 
 function NewOrderModal() {
     const btnClose = useRef('')
@@ -22,7 +23,7 @@ function NewOrderModal() {
                         <div className="container">
                             <div className="form-group">
                                 <div className="col-md-6">
-
+                                    <SelectSymbol onChange={() => { }} />
                                 </div>
                             </div>
                         </div>
