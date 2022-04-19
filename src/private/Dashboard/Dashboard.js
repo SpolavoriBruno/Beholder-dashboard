@@ -5,6 +5,7 @@ import MiniTicker from "./MiniTicker/MiniTicker"
 import BookTicker from "./BookTicker/BookTicker"
 import Wallet from "./Wallet/Wallet"
 import CandleChart from "./CandleChart"
+import NewOrderButton from "../../components/NewOrder/NewOrderButton"
 
 function Dashboard() {
     const [miniTickerState, setMiniTickerState] = useState({})
@@ -36,9 +37,15 @@ function Dashboard() {
     })
 
     return (<React.Fragment>
+
         <main className="content">
             <div className="d-flex justify-content-center flex-wrap flex-md-nowrap align-items-center py-4">
-                <h1 className="h4">Dashboard</h1>
+                <div className="d-block">
+                    <h1 className="h4">Dashboard</h1>
+                </div>
+                <div className="d-block px-12">
+                    <NewOrderButton />
+                </div>
             </div>
             <CandleChart symbol="BTCUSDT" />
             <MiniTicker data={miniTickerState} />
