@@ -1,5 +1,7 @@
 import React, { useEffect, useRef, useState } from "react"
 import { getSymbol } from "../../services/SymbolService"
+import OrderType from "./OrderType"
+import SelectSide from "./SelectSide"
 import SelectSymbol from "./SelectSymbol"
 import SymbolPrice from "./SymbolPrice"
 import WalletSumary from "./WalletSumary"
@@ -57,6 +59,14 @@ function NewOrderModal(props) {
                                 </div>
                             </div>
                             <WalletSumary wallet={props.wallet} symbol={symbol} />
+                            <div className="row">
+                                <div className="col-md-6">
+                                    <SelectSide onChange={onInputChange} side={order.size} />
+                                </div>
+                                <div className="col-md-6">
+                                    <OrderType onChange={onInputChange} type={order.type} />
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <div className="modal-footer">
