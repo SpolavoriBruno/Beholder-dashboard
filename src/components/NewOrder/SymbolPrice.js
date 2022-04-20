@@ -24,7 +24,7 @@ function SymbolPrice(props) {
             }
         },
         onError: console.error,
-        shouldReconnect: true,
+        shouldReconnect: closeEvent => true,
         reconnectInterval: 3000,
         reconnectAttempts: 20
     })
