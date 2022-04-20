@@ -12,6 +12,7 @@ function Dashboard() {
     const [miniTickerState, setMiniTickerState] = useState({})
     const [bookState, setBookState] = useState({})
     const [balanceState, setBalanceState] = useState({})
+    const [wallet, setWallet] = useState({})
 
     const { lastJsonMessage } = useWebSocket(process.env.REACT_APP_WS_URL, {
         onOpen: () => console.info('Connected to WS Server'),
@@ -52,10 +53,10 @@ function Dashboard() {
             <MiniTicker data={miniTickerState} />
             <div className="row">
                 <BookTicker data={bookState} />
-                <Wallet data={balanceState} />
+                <Wallet data={balanceState} onUpdate={setWallet} />
             </div>
         </main>
-        <NewOrderModal />
+        <NewOrderModal wallet={wallet} />
     </React.Fragment>)
 }
 

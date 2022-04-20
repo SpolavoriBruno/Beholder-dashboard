@@ -18,7 +18,7 @@ export default function Wallet(props) {
                         onOrder: item[1].onOrder,
                     }
                 })
-
+                props.onUpdate(balances)
                 setBalances(balances)
             })
             .catch(console.error)
@@ -31,7 +31,7 @@ export default function Wallet(props) {
         <div className="col-sm-12 col-md-6 mb-4">
             <div className="card border-0 shadow">
                 <div className="card-header">
-                    <h2 className="fs-5 fw-bold mb-0">Book</h2>
+                    <h2 className="fs-5 fw-bold mb-0">Wallet</h2>
                 </div>
                 <div className="table-responsive divScroll">
                     <table className="table align-items-center table-flush table-sm table-hover tableFixHead">

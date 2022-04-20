@@ -1,8 +1,10 @@
-import React, { useRef, useState } from "react"
+import React, { useEffect, useRef, useState } from "react"
+import { getSymbol } from "../../services/SymbolService"
 import SelectSymbol from "./SelectSymbol"
 import SymbolPrice from "./SymbolPrice"
+import WalletSumary from "./WalletSumary"
 
-function NewOrderModal() {
+function NewOrderModal(props) {
     const DEFAULT_ORDER = {
         symbol: 'BTCUSTD',
         price: 0,
@@ -17,6 +19,7 @@ function NewOrderModal() {
     const btnSend = useRef('')
 
     const [error, setError] = useState('')
+    const [symbol, setSymbol] = useState({})
     const [order, setOrder] = useState(DEFAULT_ORDER)
 
     function onInputChange(event) {
@@ -26,6 +29,14 @@ function NewOrderModal() {
     function onSubmit(event) {
         console.log('onSubmit')
     }
+
+    useEffect(() => {
+        if (!order.symbol) return
+        const token = localStorage.getItem('token')
+        getSymbol(order.symbol, token)
+            .then(symbolObject => setSymbol(symbolObject))
+            .catch(console.error)
+    }, [order.symbol])
 
     return (
         <div className="modal fade" id="modalOrder" tabIndex="-1" role="dialog" aria-labelledby="modalOrderLabel" aria-hidden="true">
@@ -45,6 +56,7 @@ function NewOrderModal() {
                                     <SymbolPrice symbol={order.symbol} />
                                 </div>
                             </div>
+                            <WalletSumary wallet={props.wallet} symbol={symbol} />
                         </div>
                     </div>
                     <div className="modal-footer">
