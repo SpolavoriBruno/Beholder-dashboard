@@ -1,11 +1,27 @@
 import React, { useRef, useState } from "react"
 import SelectSymbol from "./SelectSymbol"
+import SymbolPrice from "./SymbolPrice"
 
 function NewOrderModal() {
+    const DEFAULT_ORDER = {
+        symbol: 'BTCUSTD',
+        price: 0,
+        stopPrice: 0,
+        quantity: 0,
+        icebergQty: 0,
+        size: 'BUY',
+        type: 'LIMIT',
+    }
+
     const btnClose = useRef('')
     const btnSend = useRef('')
 
     const [error, setError] = useState('')
+    const [order, setOrder] = useState(DEFAULT_ORDER)
+
+    function onInputChange(event) {
+        setOrder({ ...order, [event.target.id]: event.target.value })
+    }
 
     function onSubmit(event) {
         console.log('onSubmit')
@@ -21,9 +37,12 @@ function NewOrderModal() {
                     </div>
                     <div className="modal-body">
                         <div className="container">
-                            <div className="form-group">
+                            <div className="form-group row align-items-center">
                                 <div className="col-md-6">
-                                    <SelectSymbol onChange={() => { }} />
+                                    <SelectSymbol onChange={onInputChange} />
+                                </div>
+                                <div className="col-md-6">
+                                    <SymbolPrice symbol={order.symbol} />
                                 </div>
                             </div>
                         </div>
@@ -35,8 +54,6 @@ function NewOrderModal() {
                         <button type="button" ref={btnSend} className="btn btn-sm btn-primary" onClick={onSubmit} data-bs-dismiss="modal">Send</button>
                     </div>
                 </div>
-
-
             </div>
         </div>
     )
