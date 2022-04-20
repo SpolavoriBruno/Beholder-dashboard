@@ -28,6 +28,10 @@ function NewOrderModal(props) {
         setOrder({ ...order, [event.target.id]: event.target.value })
     }
 
+    function getOrderClasses(orderType) {
+        return orderType === "MARKET" ? 'col-md-6 d-none' : 'col-md-6'
+    }
+
     function onSubmit(event) {
         console.log('onSubmit')
     }
@@ -65,6 +69,14 @@ function NewOrderModal(props) {
                                 </div>
                                 <div className="col-md-6">
                                     <OrderType onChange={onInputChange} type={order.type} />
+                                </div>
+                            </div>
+                            <div className="row">
+                                <div className={getOrderClasses(order.type)}>
+                                    <div className="form-group">
+                                        <label htmlFor="price">Unit Price</label>
+                                        <input type='number' className="form-control" id="price" placeholder={order.price} onChange={onInputChange} />
+                                    </div>
                                 </div>
                             </div>
                         </div>
