@@ -5,12 +5,12 @@ function OrderType(props) {
         <label htmlFor="side">Type</label>
         <select className="form-select" id="type" defaultValue={props.type} onChange={props.onChange}>
             <option value="ICEBERG">Iceberg</option>
-            <option value="LIMIT">Sell</option>
-            <option value="MARKET">Buy</option>
-            <option value="STOP_LOSS">Sell</option>
-            <option value="STOP_LOSS_LIMIT">Buy</option>
-            <option value="TAKE_PROFIT">Sell</option>
-            <option value="TAKE_PROFIT_LIMIT">Buy</option>
+            <option value="LIMIT">Limite</option>
+            <option value="MARKET">Maket</option>
+            <option value="STOP_LOSS">Stop Loss</option>
+            <option value="STOP_LOSS_LIMIT">Stop Loss Limit</option>
+            <option value="TAKE_PROFIT">Take Profit</option>
+            <option value="TAKE_PROFIT_LIMIT">Take Profit Limit</option>
         </select>
 
     </div>), [props.side, props.onChange])
