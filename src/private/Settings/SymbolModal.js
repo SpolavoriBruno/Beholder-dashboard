@@ -101,9 +101,8 @@ function SymbolModal(props) {
                         </div>
                         <div className="modal-footer">
                             {
-                                error
-                                    ? <div className="alert alert-danger">{error}</div>
-                                    : <React.Fragment></React.Fragment>
+                                error &&
+                                <div className="alert alert-danger">{error}</div>
                             }
                             <button type="submit" className="btn btn-sm btn-primary">
                                 Save
