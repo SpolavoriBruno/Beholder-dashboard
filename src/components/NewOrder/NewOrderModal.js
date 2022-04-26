@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from "react"
 import { getSymbol } from "../../services/SymbolService"
+import { STOP_TYPES } from "../../services/ExchangeService"
 import OrderType from "./OrderType"
 import QuantityInput from "./QuantityInput"
 import SelectSide from "./SelectSide"
@@ -32,8 +33,13 @@ function NewOrderModal(props) {
     function getOrderClasses(orderType) {
         return orderType === "MARKET" ? 'col-md-6 d-none' : 'col-md-6'
     }
+
     function getIcebergClasses(orderType) {
         return orderType !== "ICEBERG" ? 'col-md-6 d-none' : 'col-md-6'
+    }
+
+    function getStopPriceClasses(orderType) {
+        return STOP_TYPES.indexOf(orderType) === -1 ? 'col-md-6 d-none' : 'col-md-6'
     }
 
 
@@ -70,7 +76,7 @@ function NewOrderModal(props) {
         const minNotional = parseFloat(symbol.minNotional)
         if (total < minNotional) {
             btnSend.current.disabled = true
-            return setError('Total must be greater than ' + minNotional)
+            return setError('Min Notional must be greater than ' + minNotional)
         }
 
     }, [order.quantity, order.price, order.icebergQty])
@@ -124,6 +130,10 @@ function NewOrderModal(props) {
                             <div className="row mb-4">
                                 <div className={getIcebergClasses(order.type)}>
                                     <QuantityInput id="icebergQty" text="Iceberg Quantity" symbol={symbol} wallet={props.wallet} price={order.price} side={order.side} onChange={onInputChange} />
+                                </div>
+                                <div className={getStopPriceClasses(order.type)}>
+                                    <label htmlFor="stopPrice">Stop Price</label>
+                                    <input type='number' className="form-control" id="stopPrice" placeholder={order.stopPrice} onChange={onInputChange} />
                                 </div>
                             </div>
                         </div>
