@@ -21,6 +21,7 @@ function NewOrderModal(props) {
 
     const btnClose = useRef('')
     const btnSend = useRef('')
+    const inputTotal = useRef('')
 
     const [error, setError] = useState('')
     const [symbol, setSymbol] = useState({})
@@ -71,7 +72,7 @@ function NewOrderModal(props) {
         if (!price) return
 
         const total = price * quantity
-        // update total
+        inputTotal.current.value = total.toFixed(8)
 
         const minNotional = parseFloat(symbol.minNotional)
         if (total < minNotional) {
@@ -79,7 +80,7 @@ function NewOrderModal(props) {
             return setError('Min Notional must be greater than ' + minNotional)
         }
 
-    }, [order.quantity, order.price, order.icebergQty])
+    }, [order.quantity, order.price, order.icebergQty, order.type])
 
     useEffect(() => {
         if (!order.symbol) return
@@ -134,6 +135,10 @@ function NewOrderModal(props) {
                                 <div className={getStopPriceClasses(order.type)}>
                                     <label htmlFor="stopPrice">Stop Price</label>
                                     <input type='number' className="form-control" id="stopPrice" placeholder={order.stopPrice} onChange={onInputChange} />
+                                </div>
+                                <div className="col-md-6">
+                                    <label htmlFor="stopPrice">Total Price</label>
+                                    <input ref={inputTotal} type='number' className="form-control" id="total" placeholder="0" disabled />
                                 </div>
                             </div>
                         </div>
