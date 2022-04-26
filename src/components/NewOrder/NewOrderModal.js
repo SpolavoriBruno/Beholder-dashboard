@@ -26,6 +26,7 @@ function NewOrderModal(props) {
     const [error, setError] = useState('')
     const [symbol, setSymbol] = useState({})
     const [order, setOrder] = useState(DEFAULT_ORDER)
+    const [isSymbolPriceVisible, setIsSymbolPriceVisible] = useState(false)
 
     function onInputChange(event) {
         setOrder({ ...order, [event.target.id]: event.target.value })
@@ -90,6 +91,17 @@ function NewOrderModal(props) {
             .catch(console.error)
     }, [order.symbol])
 
+    useEffect(() => {
+        const modal = document.getElementById('modalOrder')
+
+        modal.addEventListener('hidden.bs.modal', event => {
+            setIsSymbolPriceVisible(false)
+        })
+        modal.addEventListener('show.bs.modal', event => {
+            setIsSymbolPriceVisible(true)
+        })
+    }, [props.wallet])
+
     return (
         <div className="modal fade" id="modalOrder" tabIndex="-1" role="dialog" aria-labelledby="modalOrderLabel" aria-hidden="true">
             <div className="modal-dialog modal-dialog-centered" role="document">
@@ -105,7 +117,10 @@ function NewOrderModal(props) {
                                     <SelectSymbol onChange={onInputChange} />
                                 </div>
                                 <div className="col-md-6">
-                                    <SymbolPrice symbol={order.symbol} />
+                                    {
+                                        isSymbolPriceVisible &&
+                                        <SymbolPrice symbol={order.symbol} />
+                                    }
                                 </div>
                             </div>
                             <WalletSumary wallet={props.wallet} symbol={symbol} />
