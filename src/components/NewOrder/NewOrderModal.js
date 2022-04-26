@@ -13,7 +13,7 @@ function NewOrderModal(props) {
         stopPrice: 0,
         quantity: 0,
         icebergQty: 0,
-        size: 'BUY',
+        side: 'BUY',
         type: 'LIMIT',
     }
 
@@ -54,7 +54,7 @@ function NewOrderModal(props) {
                     </div>
                     <div className="modal-body">
                         <div className="container">
-                            <div className="form-group row align-items-center">
+                            <div className="form-group row align-items-center mb-4">
                                 <div className="col-md-6">
                                     <SelectSymbol onChange={onInputChange} />
                                 </div>
@@ -63,15 +63,15 @@ function NewOrderModal(props) {
                                 </div>
                             </div>
                             <WalletSumary wallet={props.wallet} symbol={symbol} />
-                            <div className="row">
+                            <div className="row mb-4">
                                 <div className="col-md-6">
-                                    <SelectSide onChange={onInputChange} side={order.size} />
+                                    <SelectSide onChange={onInputChange} side={order.side} />
                                 </div>
                                 <div className="col-md-6">
                                     <OrderType onChange={onInputChange} type={order.type} />
                                 </div>
                             </div>
-                            <div className="row">
+                            <div className="row mb-4">
                                 <div className={getOrderClasses(order.type)}>
                                     <div className="form-group">
                                         <label htmlFor="price">Unit Price</label>
