@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from "react"
 import { getSymbol } from "../../services/SymbolService"
 import OrderType from "./OrderType"
+import QuantityInput from "./QuantityInput"
 import SelectSide from "./SelectSide"
 import SelectSymbol from "./SelectSymbol"
 import SymbolPrice from "./SymbolPrice"
@@ -31,6 +32,10 @@ function NewOrderModal(props) {
     function getOrderClasses(orderType) {
         return orderType === "MARKET" ? 'col-md-6 d-none' : 'col-md-6'
     }
+    function getIcebergClasses(orderType) {
+        return orderType !== "ICEBERG" ? 'col-md-6 d-none' : 'col-md-6'
+    }
+
 
     function onSubmit(event) {
         console.log('onSubmit')
@@ -77,6 +82,14 @@ function NewOrderModal(props) {
                                         <label htmlFor="price">Unit Price</label>
                                         <input type='number' className="form-control" id="price" placeholder={order.price} onChange={onInputChange} />
                                     </div>
+                                </div>
+                                <div className="col-md-6">
+                                    <QuantityInput id="quantity" text="Quantity" symbol={symbol} wallet={props.wallet} price={order.price} side={order.side} onChange={onInputChange} />
+                                </div>
+                            </div>
+                            <div className="row mb-4">
+                                <div className={getIcebergClasses(order.type)}>
+                                    <QuantityInput id="icebergQty" text="Iceberg Quantity" symbol={symbol} wallet={props.wallet} price={order.price} side={order.side} onChange={onInputChange} />
                                 </div>
                             </div>
                         </div>
