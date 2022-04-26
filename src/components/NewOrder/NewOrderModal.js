@@ -42,6 +42,40 @@ function NewOrderModal(props) {
     }
 
     useEffect(() => {
+        setError('')
+        btnSend.current.disabled = false
+
+        const quantity = parseFloat(order.quantity)
+
+        if (quantity && quantity < parseFloat(symbol.minLotSize)) {
+            btnSend.current.disabled = true
+            return setError('Quantity must be greater than ' + symbol.minLotSize)
+        }
+
+        if (order.type === 'ICEBERG') {
+            const icebergQty = parseFloat(order.icebergQty)
+
+            if (icebergQty && icebergQty < parseFloat(symbol.minLotSize)) {
+                btnSend.current.disabled = true
+                return setError('Quantity(I) must be greater than ' + symbol.minLotSize)
+            }
+        }
+
+        const price = parseFloat(order.price)
+        if (!price) return
+
+        const total = price * quantity
+        // update total
+
+        const minNotional = parseFloat(symbol.minNotional)
+        if (total < minNotional) {
+            btnSend.current.disabled = true
+            return setError('Total must be greater than ' + minNotional)
+        }
+
+    }, [order.quantity, order.price, order.icebergQty])
+
+    useEffect(() => {
         if (!order.symbol) return
         const token = localStorage.getItem('token')
         getSymbol(order.symbol, token)
