@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react"
 import { getSymbol } from "../../services/SymbolService"
-import { STOP_TYPES } from "../../services/ExchangeService"
+import { ORDER_SIDE, ORDER_TYPES, STOP_TYPES } from "../../services/ExchangeService"
 import OrderType from "./OrderType"
 import QuantityInput from "./QuantityInput"
 import SelectSide from "./SelectSide"
@@ -15,9 +15,10 @@ function NewOrderModal(props) {
         stopPrice: 0,
         quantity: 0,
         icebergQty: 0,
-        side: 'BUY',
-        type: 'LIMIT',
+        side: ORDER_SIDE.BUY,
+        type: ORDER_TYPES.MARKET,
     }
+
 
     const btnClose = useRef('')
     const btnSend = useRef('')
@@ -25,43 +26,49 @@ function NewOrderModal(props) {
 
     const [error, setError] = useState('')
     const [symbol, setSymbol] = useState({})
+    const [book, setBook] = useState({ ask: 0, bid: 0 })
     const [order, setOrder] = useState(DEFAULT_ORDER)
     const [isSymbolPriceVisible, setIsSymbolPriceVisible] = useState(false)
 
     function onInputChange(event) {
-        setOrder({ ...order, [event.target.id]: event.target.value })
+        order[event.target.id] = event.target.value
+        setOrder(order)
+    }
+
+    function onPriceChange(newBook) {
+        setBook(newBook)
     }
 
     function getOrderClasses(orderType) {
-        return orderType === "MARKET" ? 'col-md-6 d-none' : 'col-md-6'
+        return orderType === ORDER_TYPES.MARKET ? 'col-md-6 d-none' : 'col-md-6'
     }
 
     function getIcebergClasses(orderType) {
-        return orderType !== "ICEBERG" ? 'col-md-6 d-none' : 'col-md-6'
+        return orderType !== ORDER_TYPES.ICEBERG ? 'col-md-6 d-none' : 'col-md-6'
     }
 
     function getStopPriceClasses(orderType) {
         return STOP_TYPES.indexOf(orderType) === -1 ? 'col-md-6 d-none' : 'col-md-6'
     }
 
-
     function onSubmit(event) {
         console.log('onSubmit')
+        btnClose.current.click()
     }
 
     useEffect(() => {
         setError('')
         btnSend.current.disabled = false
 
-        const quantity = parseFloat(order.quantity)
+        const quantity = parseFloat(order.quantity) || parseFloat(symbol.minLotSize)
 
-        if (quantity && quantity < parseFloat(symbol.minLotSize)) {
+        if (quantity < parseFloat(symbol.minLotSize)) {
             btnSend.current.disabled = true
             return setError('Quantity must be greater than ' + symbol.minLotSize)
         }
 
-        if (order.type === 'ICEBERG') {
-            const icebergQty = parseFloat(order.icebergQty)
+        if (order.type === ORDER_TYPES.ICEBERG) {
+            const icebergQty = parseFloat(order.icebergQty) || 0
 
             if (icebergQty && icebergQty < parseFloat(symbol.minLotSize)) {
                 btnSend.current.disabled = true
@@ -69,19 +76,28 @@ function NewOrderModal(props) {
             }
         }
 
-        const price = parseFloat(order.price)
-        if (!price) return
+        const minNotional = parseFloat(symbol.minNotional) || 0.01
+        let total = 0
 
-        const total = price * quantity
+        if (order.type === ORDER_TYPES.MARKET) {
+            console.log(book)
+            if (order.side === ORDER_SIDE.BUY) {
+                total = quantity * book.ask
+            } else {
+                total = quantity * book.bid
+            }
+        } else {
+            const price = parseFloat(order.price) || 0
+            total = price * quantity
+        }
+
         inputTotal.current.value = total.toFixed(8)
 
-        const minNotional = parseFloat(symbol.minNotional)
         if (total < minNotional) {
             btnSend.current.disabled = true
             return setError('Min Notional must be greater than ' + minNotional)
         }
-
-    }, [order.quantity, order.price, order.icebergQty, order.type])
+    }, [order.quantity, order.price, order.icebergQty, order.type, order.side])
 
     useEffect(() => {
         if (!order.symbol) return
@@ -119,7 +135,7 @@ function NewOrderModal(props) {
                                 <div className="col-md-6">
                                     {
                                         isSymbolPriceVisible &&
-                                        <SymbolPrice symbol={order.symbol} />
+                                        <SymbolPrice symbol={order.symbol} onChange={onPriceChange} />
                                     }
                                 </div>
                             </div>
@@ -162,7 +178,7 @@ function NewOrderModal(props) {
                         {error &&
                             <div className="alert alert-danger mt-1 col-9 py-1" role="alert">{error}</div>
                         }
-                        <button type="button" ref={btnSend} className="btn btn-sm btn-primary" onClick={onSubmit} data-bs-dismiss="modal">Send</button>
+                        <button type="button" ref={btnSend} className="btn btn-sm btn-primary" onClick={onSubmit}>Send</button>
                     </div>
                 </div>
             </div>
