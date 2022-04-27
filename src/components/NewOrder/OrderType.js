@@ -2,7 +2,7 @@ import React, { useMemo } from "react"
 
 function OrderType(props) {
     return useMemo(() => (<div className="form-group">
-        <label htmlFor="side">Type</label>
+        <label htmlFor="type">Type</label>
         <select className="form-select" id="type" defaultValue={props.type} onChange={props.onChange}>
             <option value="ICEBERG">Iceberg</option>
             <option value="LIMIT">Limit</option>
@@ -13,7 +13,7 @@ function OrderType(props) {
             <option value="TAKE_PROFIT_LIMIT">Take Profit Limit</option>
         </select>
 
-    </div>), [props.side, props.onChange])
+    </div>), [props.type, props.onChange])
 }
 
 export default OrderType

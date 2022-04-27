@@ -4,6 +4,7 @@ import useWebSocket from "react-use-websocket"
 /**
  * props
  * - symbol
+ * - onChange
  */
 function SymbolPrice(props) {
 
@@ -20,7 +21,9 @@ function SymbolPrice(props) {
         },
         onMessage: () => {
             if (lastJsonMessage) {
-                setBook({ bid: lastJsonMessage.b, ask: lastJsonMessage.a })
+                const book = { bid: lastJsonMessage.b, ask: lastJsonMessage.a }
+                setBook(book)
+                if (props.onChange) props.onChange(book)
             }
         },
         onError: console.error,
