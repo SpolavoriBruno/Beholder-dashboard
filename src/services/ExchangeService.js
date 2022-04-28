@@ -26,6 +26,12 @@ export async function getBalance(token) {
     }
     const response = await axios.get(balanceUrl, { headers })
 
-    return response.data
+    return Object.entries(response.data).map(item => {
+        return {
+            symbol: item[0],
+            available: item[1].available,
+            onOrder: item[1].onOrder,
+        }
+    })
 }
 
