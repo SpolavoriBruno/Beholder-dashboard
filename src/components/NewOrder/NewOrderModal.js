@@ -7,7 +7,13 @@ import SelectSide from "./SelectSide"
 import SelectSymbol from "./SelectSymbol"
 import SymbolPrice from "./SymbolPrice"
 import WalletSumary from "./WalletSumary"
+import { placeOrder } from "../../services/OrdersService"
 
+/**
+ * props:
+ * - wallet
+ * - onSubmit
+ */
 function NewOrderModal(props) {
     const DEFAULT_ORDER = {
         symbol: 'BTCUSTD',
@@ -52,8 +58,16 @@ function NewOrderModal(props) {
     }
 
     function onSubmit(event) {
-        console.log('onSubmit')
-        btnClose.current.click()
+        const token = localStorage.getItem('token')
+        placeOrder(order, token)
+            .then(result => {
+                btnClose.current.click()
+                props.onSubmit && props.onSubmit(result)
+            })
+            .catch(error => {
+                setError(error.message)
+                console.error(error)
+            })
     }
 
     useEffect(() => {
@@ -80,7 +94,6 @@ function NewOrderModal(props) {
         let total = 0
 
         if (order.type === ORDER_TYPES.MARKET) {
-            console.log(book)
             if (order.side === ORDER_SIDE.BUY) {
                 total = quantity * book.ask
             } else {
