@@ -10,14 +10,7 @@ export default function Wallet(props) {
     useEffect(() => {
         const token = localStorage.getItem('token')
         getBalance(token)
-            .then(info => {
-                const balances = Object.entries(info).map(item => {
-                    return {
-                        symbol: item[0],
-                        available: item[1].available,
-                        onOrder: item[1].onOrder,
-                    }
-                })
+            .then(balances => {
                 props.onUpdate(balances)
                 setBalances(balances)
             })
