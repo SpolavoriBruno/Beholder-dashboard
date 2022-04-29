@@ -7,6 +7,8 @@ import { getBalance } from "../../services/ExchangeService"
 import { getOrders } from "../../services/OrdersService"
 import OrderRow from "./OrderRow"
 import OrderPagination from "./OrderPagination"
+import SearchSymbol from "../../components/SearchSymbol/SearchSymbol"
+import ViewOrderModal from "./ViewOrderModal"
 
 
 function Orders() {
@@ -16,19 +18,20 @@ function Orders() {
 
     const [count, setCount] = useState(0)
     const [balances, setBalances] = useState({})
+    const [viewOrder, setViewOrder] = useState({})
     const [orders, setOrders] = useState([])
     const [search, setSearch] = useState(symbol || '')
     const [page, setPage] = useState(getLocation() || 1)
-
-    function getLocation(location) {
-        if (!location) location = defaultLocation
-        return new URLSearchParams(location.search).get('page')
-    }
 
     function processError(error) {
         if (error.response?.status === 401)
             return history.push('/')
         console.error(error)
+    }
+
+    function getLocation(location) {
+        if (!location) location = defaultLocation
+        return new URLSearchParams(location.search).get('page')
     }
 
     function getBalancesCall(token) {
@@ -40,14 +43,25 @@ function Orders() {
     }
 
     function getOrdersCall(token) {
-        console.log(search, page)
         getOrders(search, page, token)
             .then(result => {
-                console.log(result);
                 setOrders(result.rows)
                 setCount(result.count)
             })
             .catch(processError)
+    }
+
+    function onOrderSubmit(order) {
+        history.go(0)
+    }
+
+    function onSearchChange(event) {
+        setSearch(event.target.value)
+    }
+
+    function onViewOrderClick(event) {
+        const id = +event.target.id.split('/')[1]
+        setViewOrder(orders.find(order => order.id === id))
     }
 
     useEffect(() => {
@@ -61,11 +75,7 @@ function Orders() {
 
         getBalancesCall(token)
         getOrdersCall(token)
-    }, [page])
-
-    function onOrderSubmit(order) {
-        history.go(0)
-    }
+    }, [page, search])
 
     return (<React.Fragment>
         <main className="content">
@@ -73,9 +83,12 @@ function Orders() {
                 <div className="d-block">
                     <h2 className="h4">Orders</h2>
                 </div>
-                <div className="btn-toolbar mb-2 mb-md-0">
-                    <div className="d-inline-flex align-items-center">
+                <div className="btn-toolbar mb-2 mb-md-0 align-items-center">
+                    <div className="d-inline-flex">
                         <NewOrderButton />
+                    </div>
+                    <div className="btn-group ms-4">
+                        <SearchSymbol placeholder="Search symbol" onChange={onSearchChange} />
                     </div>
                 </div>
             </div>
@@ -94,7 +107,7 @@ function Orders() {
                     </thead>
                     <tbody>
                         {
-                            orders?.map(order => (<OrderRow key={order.clientOrderId} data={order} />))
+                            orders?.map(order => (<OrderRow key={order.clientOrderId} data={order} onClick={onViewOrderClick} />))
                         }
                     </tbody>
                 </table>
@@ -102,6 +115,7 @@ function Orders() {
             </div>
         </main>
         <NewOrderModal wallet={balances} onSubmit={onOrderSubmit} />
+        <ViewOrderModal data={viewOrder} />
     </React.Fragment>)
 }
 
