@@ -4,7 +4,7 @@ function NewOrderButton() {
     return (
         <button
             id="btn-new-order"
-            className="btn btn-primary btn-lg animate-up-2"
+            className="btn btn-primary btn-sm animate-up-2"
             type="button"
             data-bs-toggle="modal"
             data-bs-target="#modalOrder"

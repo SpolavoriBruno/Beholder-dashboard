@@ -9,7 +9,7 @@ const PAGE_SIZE = 10
  * Props:
  * - count
  */
-function OrderPagination(props) {
+function Pagination(props) {
     const query = useQuery()
     const pageQty = Math.ceil(props.count / PAGE_SIZE)
     const pages = []
@@ -50,4 +50,4 @@ function OrderPagination(props) {
     )
 }
 
-export default OrderPagination
+export default Pagination

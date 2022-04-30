@@ -48,8 +48,11 @@ function SelectSymbol(props) {
     }, [onlyFavorites])
 
     const selectSymbol = useMemo(() => (
-        <div className="form-group mb-4">
-            <label htmlFor="symbol">Symbol</label>
+        <div className="form-group">
+            {
+                props.label &&
+                <label htmlFor="symbol">{props.label}</label>
+            }
             <div className="input-group">
                 <button ref={buttonRef} type="button" className="btn btn-secondary d-inline-flex align-items-center" onClick={onFavoriteClick}>
                     <svg className="icon icon-xs" fill={starColor} stroke="#000" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">

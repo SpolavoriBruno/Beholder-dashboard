@@ -8,6 +8,7 @@ import Wallet from "./Wallet/Wallet"
 import CandleChart from "./CandleChart"
 import NewOrderButton from "../../components/NewOrder/NewOrderButton"
 import NewOrderModal from "../../components/NewOrder/NewOrderModal"
+import SelectSymbol from "../../components/NewOrder/SelectSymbol"
 
 function Dashboard() {
     const history = useHistory()
@@ -16,9 +17,14 @@ function Dashboard() {
     const [bookState, setBookState] = useState({})
     const [balanceState, setBalanceState] = useState({})
     const [wallet, setWallet] = useState({})
+    const [chartSymbol, setChartSymbol] = useState('BTCUSDT');
 
     function onOrderSubmit(order) {
         history.push(`/orders/${order.symbol}`)
+    }
+
+    function onChangeSymbol(event) {
+        setChartSymbol(event.target.value);
     }
 
     const { lastJsonMessage } = useWebSocket(process.env.REACT_APP_WS_URL, {
@@ -48,15 +54,20 @@ function Dashboard() {
     return (<React.Fragment>
 
         <main className="content">
-            <div className="d-flex justify-content-center flex-wrap flex-md-nowrap align-items-center py-4">
+            <div className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-4">
                 <div className="d-block">
-                    <h1 className="h4">Dashboard</h1>
+                    <h1 className="h4 mb-0">Dashboard</h1>
                 </div>
-                <div className="d-block px-12">
-                    <NewOrderButton />
+                <div className="btn-toolbar align-items-center">
+                    <div className="ms-2 ms-lg-3">
+                        <SelectSymbol onChange={onChangeSymbol} />
+                    </div>
+                    <div className="ms-2 ms-lg-3">
+                        <NewOrderButton />
+                    </div>
                 </div>
             </div>
-            <CandleChart symbol="BTCUSDT" />
+            <CandleChart symbol={chartSymbol} />
             <MiniTicker data={miniTickerState} />
             <div className="row">
                 <BookTicker data={bookState} />

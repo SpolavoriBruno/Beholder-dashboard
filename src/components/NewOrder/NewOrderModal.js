@@ -143,7 +143,7 @@ function NewOrderModal(props) {
                         <div className="container">
                             <div className="form-group row align-items-center mb-4">
                                 <div className="col-md-6">
-                                    <SelectSymbol onChange={onInputChange} />
+                                    <SelectSymbol onChange={onInputChange} label="Symbol" />
                                 </div>
                                 <div className="col-md-6">
                                     {

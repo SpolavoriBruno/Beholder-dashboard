@@ -29,10 +29,10 @@ function BookTicker(props) {
             <div className="card border-0 shadow">
                 <div className="card-header">
                     <div className="row">
-                        <div className="col">
+                        <div className="col-5">
                             <h2 className="fs-5 fw-bold mb-0">Book</h2>
                         </div>
-                        <div className="col offset-md-3">
+                        <div className="col-7">
                             <SelectQuote onChange={onQuoteChange} />
                         </div>
                     </div>

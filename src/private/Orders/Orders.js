@@ -6,7 +6,7 @@ import NewOrderButton from "../../components/NewOrder/NewOrderButton"
 import { getBalance } from "../../services/ExchangeService"
 import { getOrders } from "../../services/OrdersService"
 import OrderRow from "./OrderRow"
-import OrderPagination from "./OrderPagination"
+import Pagination from "../../components/Pagination/Pagination"
 import SearchSymbol from "../../components/SearchSymbol/SearchSymbol"
 import ViewOrderModal from "./ViewOrderModal"
 
@@ -111,7 +111,7 @@ function Orders() {
                         }
                     </tbody>
                 </table>
-                <OrderPagination count={count} />
+                <Pagination count={count} />
             </div>
         </main>
         <NewOrderModal wallet={balances} onSubmit={onOrderSubmit} />

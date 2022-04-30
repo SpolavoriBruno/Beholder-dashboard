@@ -1,3 +1,8 @@
 svg {
   pointer-events: none;
 }
+
+main.content {
+  justify-content: center;
+  display: grid;
+}
