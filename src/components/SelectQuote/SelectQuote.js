@@ -22,6 +22,7 @@ function SelectQuote(props) {
             <option value="ETH">ETH</option>
             <option value="BUSD">BUSD</option>
             <option value="USDT">USDT</option>
+            <option value="USD">USD</option>
         </select>
     )
 }
