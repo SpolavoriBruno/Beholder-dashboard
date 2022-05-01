@@ -81,7 +81,7 @@ function Orders() {
         <main className="content">
             <div className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-4">
                 <div className="d-block">
-                    <h2 className="h4">Orders</h2>
+                    <h2 className="h4 mb-0">Orders</h2>
                 </div>
                 <div className="btn-toolbar mb-2 mb-md-0 align-items-center">
                     <div className="d-inline-flex">

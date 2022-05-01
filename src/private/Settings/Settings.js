@@ -75,7 +75,7 @@ function Settings() {
     return (<React.Fragment>
         <main className="content">
             <div className="d-flex justify-content-center flex-wrap flex-md-nowrap align-items-center py-4">
-                <h1 className="h4">Settings</h1>
+                <h1 className="h4 mb-0">Settings</h1>
             </div>
             <div className="row">
                 <div className="col-12">
