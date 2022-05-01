@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from "react"
 import { useHistory } from "react-router-dom"
 import { ORDER_STATUS } from '../../utils/exchange'
 import { getDate } from "../../utils/date.js"
-import { cancelOrder } from "../../services/OrdersService"
+import { cancelOrder, syncOrder } from "../../services/OrdersService"
 
 /** 
  * props:
@@ -15,6 +15,7 @@ function ViewOrderModal(props) {
     const btnCancel = useRef('')
 
     const [error, setError] = useState('')
+    const [isSyncing, setIsSyncing] = useState(false)
     const [order, setOrder] = useState({
         symbol: ''
     })
@@ -48,6 +49,29 @@ function ViewOrderModal(props) {
             // TODO: handle error
             .catch(console.error)
     }
+
+    function onSyncClick(event) {
+        setError('')
+        setIsSyncing(true)
+    }
+
+    useEffect(() => {
+        if (!isSyncing) return
+
+        const token = localStorage.getItem('token')
+        syncOrder(order.id, token)
+            .then(updatedOrder => {
+                setIsSyncing(false);
+                setOrder(updatedOrder)
+            })
+            .catch(error => {
+                console.error(error)
+                setError(error?.message)
+                setIsSyncing(false);
+            })
+
+        setIsSyncing(false)
+    }, [isSyncing])
 
     useEffect(() => {
         if (props.data) {
@@ -160,6 +184,12 @@ function ViewOrderModal(props) {
                                 {error}
                             </div>
                         }
+                        <button ref={btnCancel} type="button" className="btn btn-info btn-sm" onClick={onSyncClick}>
+                            <svg className="icon icon-xs" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                            </svg>
+                            {isSyncing ? 'Syncing...' : 'Sync'}
+                        </button>
                         <button ref={btnCancel} type="button" className="btn btn-danger btn-sm" onClick={onCancelClick}>
                             <svg className="icon icon-xs" fill="none" stroke="currentColor" viewBox="3 2 24 24" xmlns="http://www.w3.org/2000/svg">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
