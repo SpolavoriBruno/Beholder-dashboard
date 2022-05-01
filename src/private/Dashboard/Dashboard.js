@@ -8,7 +8,7 @@ import Wallet from "./Wallet/Wallet"
 import CandleChart from "./CandleChart"
 import NewOrderButton from "../../components/NewOrder/NewOrderButton"
 import NewOrderModal from "../../components/NewOrder/NewOrderModal"
-import SelectSymbol from "../../components/NewOrder/SelectSymbol"
+import SelectSymbol from "../../components/SelectSymbol/SelectSymbol"
 
 function Dashboard() {
     const history = useHistory()

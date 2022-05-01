@@ -4,7 +4,7 @@ import { ORDER_SIDE, ORDER_TYPES, STOP_TYPES } from "../../services/ExchangeServ
 import OrderType from "./OrderType"
 import QuantityInput from "./QuantityInput"
 import SelectSide from "./SelectSide"
-import SelectSymbol from "./SelectSymbol"
+import SelectSymbol from "../SelectSymbol/SelectSymbol"
 import SymbolPrice from "./SymbolPrice"
 import WalletSumary from "./WalletSumary"
 import { placeOrder } from "../../services/OrdersService"
