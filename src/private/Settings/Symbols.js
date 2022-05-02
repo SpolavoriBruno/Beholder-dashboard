@@ -42,6 +42,10 @@ function Symbols() {
             })
     }
 
+    function onModalSubmit(event) {
+        loadSymbols(event.target.value.quote)
+    }
+
     function loadSymbols(selectedValue) {
         const token = localStorage.getItem('token')
         const search = selectedValue === "FAVORITES" ? '' : selectedValue
@@ -76,11 +80,11 @@ function Symbols() {
     }, [isSyncing, quote, page])
 
     return (<React.Fragment>
-        {
-            error &&
-            <div className="alert alert-danger text-center mt-2 col-9 py-2">{error}</div>
-        }
         <div className="row">
+            {
+                error &&
+                <div className="col-12 alert alert-danger text-center mt-2 col-9 py-2">{error}</div>
+            }
             <div className="col-12">
                 <div className='card border-0 shadow' >
                     <div className='card-header text-center'>
@@ -110,10 +114,10 @@ function Symbols() {
                             </tbody>
                             <tfoot>
                                 <tr>
-                                    <td colSpan="4">
-                                        <Pagination count={count} />
+                                    <td colSpan="5">
+                                        <Pagination count={count} page={page} />
                                     </td>
-                                    <td colSpan="2" className="text-center">
+                                    <td colSpan="1" className="text-center">
                                         <button className="btn btn-primary animate-up-2" type="button" onClick={onSyncClick}>
                                             <svg className="icon icon-xs" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
@@ -128,7 +132,7 @@ function Symbols() {
                 </div>
             </div>
         </div>
-        <SymbolModal data={editSymbol} onSubmit={loadSymbols} />
+        <SymbolModal data={editSymbol} onSubmit={onModalSubmit} />
     </React.Fragment>)
 }
 
