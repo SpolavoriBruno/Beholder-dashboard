@@ -11,7 +11,7 @@ function WalletSumary(props) {
     function getBaseAsset() {
         if (!props.wallet || !Array.isArray(props.wallet)) return 0
 
-        const baseAsset = props.wallet.find(w => w.symbol === props.symbol.base)
+        const baseAsset = props.wallet.find(w => w.symbol === props.symbol?.base)
 
         if (!baseAsset) return 0
 
@@ -21,7 +21,7 @@ function WalletSumary(props) {
     function getQuoteAsset() {
         if (!props.wallet || !Array.isArray(props.wallet)) return 0
 
-        const quoteAsset = props.wallet.find(w => w.symbol === props.symbol.quote)
+        const quoteAsset = props.wallet.find(w => w.symbol === props.symbol?.quote)
 
         if (!quoteAsset) return 0
 
