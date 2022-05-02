@@ -6,6 +6,7 @@ import Dashboard from "./private/Dashboard/Dashboard"
 import Login from "./public/Login/Login"
 import Orders from "./private/Orders/Orders"
 import Settings from "./private/Settings/Settings"
+import Monitors from "./private/Monitors/Monitors"
 import Menu from "./components/Menu/Menu"
 
 function Routes() {
@@ -27,6 +28,10 @@ function Routes() {
 
             <PrivateRoute path="/automations" >
                 <Automations />
+            </PrivateRoute>
+
+            <PrivateRoute path="/monitors" >
+                <Monitors />
             </PrivateRoute>
 
             <PrivateRoute path="/dashboard" >
