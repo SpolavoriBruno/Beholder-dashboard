@@ -35,9 +35,7 @@ function Symbols() {
                 setIsSyncing(false)
             })
             .catch(error => {
-                if (error?.response?.status === 401)
-                    return history.push('/')
-                console.error(error)
+                console.error(error.response?.data)
                 setError(error.message)
             })
     }
@@ -57,8 +55,6 @@ function Symbols() {
                 setCount(result.count)
             })
             .catch(error => {
-                if (error?.response?.status === 401)
-                    return history.push('/')
                 console.error(error)
                 setError(error.message)
             })

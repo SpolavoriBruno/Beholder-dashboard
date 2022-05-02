@@ -1,12 +1,10 @@
 import React, { useEffect, useState, useRef } from "react"
-import { useHistory } from "react-router-dom"
 
 import { getSettings, updateSettings } from "../../services/SettingsService"
 import Card from "./Card"
 import Symbols from "./Symbols"
 
 function Settings() {
-    const history = useHistory()
 
     const inputEmail = useRef(null)
     const inputNewPassword = useRef(null)
@@ -30,11 +28,9 @@ function Settings() {
                 inputAccessKey.current.value = settings.accessKey
             })
             .catch(error => {
-                if (error?.response?.status === 401)
-                    return history.push('/')
-                setError(error?.response?.data)
+                setError(error.response?.data)
             })
-    }, [history])
+    }, [])
 
     function onFormSubmit(event) {
         event.preventDefault()

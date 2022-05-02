@@ -24,9 +24,7 @@ function Orders() {
     const [page, setPage] = useState(getLocation() || 1)
 
     function processError(error) {
-        if (error.response?.status === 401)
-            return history.push('/')
-        console.error(error)
+        console.error(error.response?.data)
     }
 
     function getLocation(location) {

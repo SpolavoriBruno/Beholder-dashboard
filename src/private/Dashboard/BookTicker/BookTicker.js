@@ -17,8 +17,7 @@ function BookTicker(props) {
         getSymbols(token)
             .then(symbols => setSymbols(filterSymbolsName(symbols, quote)))
             .catch(error => {
-                if (error?.response?.status === 401) return
-                console.error(error)
+                console.error(error.response?.data)
             })
     }, [quote])
 
