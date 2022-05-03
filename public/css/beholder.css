@@ -6,3 +6,24 @@ main.content {
   justify-content: center;
   display: grid;
 }
+
+@media (min-width: 992px) {
+  .form-control.form-control-lg {
+    padding: 1rem 1rem;
+  }
+}
+
+.search-bar .form-control {
+  width: 250px;
+  transition: width 0.2s ease-in-out;
+}
+
+@media (max-width: 575.98px) {
+  .search-bar .form-control {
+    width: 120px;
+  }
+
+  .search-bar .form-control:focus {
+    width: 150px;
+  }
+}
