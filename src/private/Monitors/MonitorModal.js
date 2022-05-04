@@ -66,7 +66,7 @@ function MonitorModal(props) {
                             <div className="col-6">
                                 <div className="form-group">
                                     <label htmlFor="broadcastLabel">Broadcast Label <span data-bs-toggle="tooltip" data-bs-placement="top" title=""></span></label>
-                                    <input type="text" className="form-control" id="broadcastLabel" placeholder="none" value={monitor.broadcastLabel} onChange={onInputChange} />
+                                    <input type="text" className="form-control" id="broadcastLabel" placeholder="none" value={monitor.broadcastLabel || ''} onChange={onInputChange} />
                                 </div>
                             </div>
                             {monitor.type === ORDER_TYPE.CANDLES &&
