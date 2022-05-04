@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from "react"
+import React, { useEffect, useState } from "react"
 import { useHistory, useLocation } from "react-router-dom"
 import Pagination from "../../components/Pagination/Pagination"
 import { deleteMonitor, getMonitors, startMonitor, stopMonitor } from "../../services/MonitorService"
@@ -62,6 +62,10 @@ function Monitors() {
         })
     }
 
+    function newMonitorClick() {
+        setEditMonitors({})
+    }
+
     useEffect(() => {
         return history.listen(location => {
             setPage(getPage(location))
@@ -84,7 +88,7 @@ function Monitors() {
             </div>
             <div className="btn-toolbar mb-2 mb-md-0 align-items-center">
                 <div className="d-inline-flex align-items-center">
-                    <button className="btn btn-primary animate-up-2" id="btnNewMonitor" data-bs-toggle="modal" data-bs-target="#modalMonitor">
+                    <button className="btn btn-primary animate-up-2" id="btnNewMonitor" onClick={newMonitorClick} data-bs-toggle="modal" data-bs-target="#modalMonitor">
                         <svg className="icon icon-xs" fill="none" stroke="currentColor" viewBox="3 0 24 24" xmlns="http://www.w3.org/2000/svg">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 14v6m-3-3h6M6 10h2a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v2a2 2 0 002 2zm10 0h2a2 2 0 002-2V6a2 2 0 00-2-2h-2a2 2 0 00-2 2v2a2 2 0 002 2zM6 20h2a2 2 0 002-2v-2a2 2 0 00-2-2H6a2 2 0 00-2 2v2a2 2 0 002 2z" />
                         </svg>
