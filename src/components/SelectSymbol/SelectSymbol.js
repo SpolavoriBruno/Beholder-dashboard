@@ -12,21 +12,28 @@ const STAR_COLOR = '#ffc107'
  */
 function SelectSymbol(props) {
     const [symbols, setSymbols] = useState(['Loading...'])
-    const [onlyFavorites, setOnlyFavorites] = useState(props.onlyFavorites ? props.onlyFavorites : true)
+    const [onlyFavorites, setOnlyFavorites] = useState(props.onlyFavorites || true)
     const [starColor, setStarColor] = useState(STAR_COLOR)
 
     const selectRef = useRef('')
     const buttonRef = useRef('')
 
     function onFavoriteClick() {
-        setOnlyFavorites(!onlyFavorites)
-        setStarColor(!onlyFavorites ? STAR_COLOR : 'white')
+        setOnlyFavorites(oldState => {
+            setStarColor(!oldState ? STAR_COLOR : 'white')
+            return !oldState
+        })
     }
 
     useEffect(() => {
         selectRef.current.value = props.symbol || 'BTCUSDT'
         buttonRef.current.disabled = selectRef.current.disabled = props.disabled
     }, [props.symbol, props.disabled])
+
+    useEffect(() => {
+        setOnlyFavorites(props.onlyFavorites)
+        setStarColor(props.onlyFavorites ? STAR_COLOR : 'white')
+    }, [props.onlyFavorites])
 
     useEffect(() => {
         const token = localStorage.getItem('token')

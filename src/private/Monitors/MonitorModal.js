@@ -46,7 +46,7 @@ function MonitorModal(props) {
             <div className="modal-content">
                 <div className="modal-header">
                     <h4 className="h5">
-                        {props.data?.id ? "Edit Monitor" : "New Monitor"}
+                        {monitor?.id ? "Edit Monitor" : "New Monitor"}
                     </h4>
                     <button ref={btnClose} type="button" className="btn-close" data-bs-dismiss="modal" aria-label="close"></button>
                 </div>
@@ -56,9 +56,10 @@ function MonitorModal(props) {
                             <div className="col-6">
                                 <MonitorType onChange={onInputChange} type={monitor.type} />
                             </div>
-                            {monitor.type !== ORDER_TYPE.USER_DATA &&
+                            {
+                                monitor.type !== ORDER_TYPE.USER_DATA &&
                                 <div className="col-6">
-                                    <SelectSymbol onChange={onInputChange} symbol={props.data.symbol} label="Symbol" />
+                                    <SelectSymbol onChange={onInputChange} symbol={monitor.symbol} onlyFavorites={false} label="Symbol" />
                                 </div>
                             }
                         </div>
