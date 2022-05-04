@@ -22,7 +22,6 @@ export async function getSymbol(symbol, token) {
 
 export async function searchSymbols({ search, onlyFavorites, page = 1 }, token) {
     const params = []
-    console.log(search)
     search && params.push(`search=${search}`)
     onlyFavorites && params.push(`onlyFavorites=${onlyFavorites}`)
     page && params.push(`page=${page}`)
