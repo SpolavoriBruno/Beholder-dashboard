@@ -60,7 +60,7 @@ function Dashboard() {
                 </div>
                 <div className="btn-toolbar align-items-center">
                     <div className="ms-2 ms-lg-3">
-                        <SelectSymbol onChange={onChangeSymbol} />
+                        <SelectSymbol onChange={onChangeSymbol} onlyFavorites={true} />
                     </div>
                     <div className="ms-2 ms-lg-3">
                         <NewOrderButton />
