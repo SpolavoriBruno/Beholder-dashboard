@@ -1,8 +1,7 @@
 import React, { useEffect, useRef, useState } from "react"
 import SelectSymbol from "../../components/SelectSymbol/SelectSymbol"
 import SwitchInput from "../../components/SwitchInput/SwitchInput"
-import { INTERVAL, ORDER_TYPE } from "../../utils/exchange"
-import { saveMonitor } from "../../services/MonitorService";
+import { saveMonitor, getMonitorTypes } from "../../services/MonitorService";
 import MonitorIndexes from "./MonitorIndex"
 import MonitorType from "./MonitorType"
 import SelectInterval from "./SelectInterval"
@@ -16,9 +15,10 @@ function MonitorModal(props) {
     const btnClose = useRef('')
     const btnSave = useRef('')
 
+    const [monitorTypes, setMonitorTypes] = useState({})
     const [error, setError] = useState('')
     const [monitor, setMonitor] = useState({
-        type: ORDER_TYPE.CANDLES,
+        type: 'CANDLES',
     })
 
     function onSubmit(event) {
@@ -36,6 +36,13 @@ function MonitorModal(props) {
     function onInputChange(event) {
         setMonitor(prevState => ({ ...prevState, [event.target.id]: event.target.value }))
     }
+
+    useEffect(() => {
+        getMonitorTypes(localStorage.getItem('token'))
+            .then(types => {
+                setMonitorTypes(types.getObject())
+            })
+    }, [])
 
     useEffect(() => {
         setMonitor(props.data)
@@ -57,7 +64,7 @@ function MonitorModal(props) {
                                 <MonitorType onChange={onInputChange} type={monitor.type} />
                             </div>
                             {
-                                monitor.type !== ORDER_TYPE.USER_DATA &&
+                                monitor.type !== monitorTypes.USER_DATA &&
                                 <div className="col-6">
                                     <SelectSymbol onChange={onInputChange} symbol={monitor.symbol} onlyFavorites={false} label="Symbol" />
                                 </div>
@@ -70,16 +77,18 @@ function MonitorModal(props) {
                                     <input type="text" className="form-control" id="broadcastLabel" placeholder="none" value={monitor.broadcastLabel || ''} onChange={onInputChange} />
                                 </div>
                             </div>
-                            {monitor.type === ORDER_TYPE.CANDLES &&
+                            {monitor.type === monitorTypes.CANDLES &&
                                 <div className="col-6">
                                     <SelectInterval onChange={onInputChange} interval={monitor.interval} />
                                 </div>
                             }
                         </div>
                         <div className="row mt-3">
-                            <div className="col-6">
-                                <MonitorIndexes onChange={onInputChange} indexes={monitor.indexes} />
-                            </div>
+                            {monitor.type === monitorTypes.CANDLES &&
+                                <div className="col-6">
+                                    <MonitorIndexes onChange={onInputChange} indexes={monitor.indexes} />
+                                </div>
+                            }
                         </div>
                         <div className="row mt-3">
                             <div className="col-6">

@@ -1,5 +1,5 @@
-import React, { useEffect, useMemo, useRef } from "react"
-import { ORDER_TYPE } from "../../utils/exchange"
+import React, { useEffect, useMemo, useRef, useState } from "react"
+import { getMonitorTypes } from "../../services/MonitorService"
 
 /** 
  * props
@@ -7,29 +7,41 @@ import { ORDER_TYPE } from "../../utils/exchange"
  * - onChange
  */
 function MonitorType(props) {
+    const [monitorTypes, setMonitorTypes] = useState([])
+
     const selectRef = useRef('')
     const selectType = useMemo(() => (
         <div className="form-group">
             <label htmlFor="type">Type</label>
-            <select ref={selectRef} id="type" className="form-select" onChange={props.onChange} >
+            <select ref={selectRef} id="type" className="form-select" onChange={props.onChange} placeholder="Select a Type">
                 {
-                    Object.entries(ORDER_TYPE).map(type => {
-                        const name = type[1]
+                    monitorTypes.sort((a, b) => (a < b ? -1 : 1)).map(type => {
+                        const name = type.type
                             .toLocaleLowerCase()
                             .split("_")
                             .map(word => word.charAt(0).toUpperCase() + word.slice(1))
                             .join(" ")
-                        return (<option key={type[1]} value={type[1]}>{name}</option>)
+                        return (<option key={type.type} value={type.type} disabled={type.systemOnly}>{name}</option>)
                     })
                 }
             </select>
         </div>
-    ), [props.type])
+    ), [props.type, monitorTypes])
 
     useEffect(() => {
-        selectRef.current && (selectRef.current.value = props.type)
-        props.onChange({ target: { id: 'type', value: props.type } })
+        selectRef.current && (selectRef.current.value = props.type || 'CANDLES')
+        props.onChange({ target: { id: 'type', value: props.type || 'CANDLES' } })
     }, [props.type])
+
+    useEffect(() => {
+        const token = localStorage.getItem('token')
+        getMonitorTypes(token)
+            .then(newTypes => {
+                setMonitorTypes(
+                    newTypes.sort((a, b) => ((a.type > b.type || a.systemOnly) ? 1 : -1))
+                )
+            })
+    }, [])
 
     return selectType
 }

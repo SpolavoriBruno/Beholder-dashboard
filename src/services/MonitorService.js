@@ -2,6 +2,7 @@ import axios from "./BaseService"
 
 const API_URL = process.env.REACT_APP_API_URL
 const MONITORS_URL = `${API_URL}/monitors`
+let monitorTypes = []
 
 export async function getMonitors(page, token) {
     const url = `${MONITORS_URL}?page=${page}`
@@ -11,6 +12,24 @@ export async function getMonitors(page, token) {
     const response = await axios.get(url, { headers })
 
     return response.data
+}
+
+export async function getMonitorTypes(token) {
+    if (monitorTypes.length > 0) return monitorTypes
+
+    const url = `${MONITORS_URL}/types`
+    const headers = {
+        'authorization': token
+    }
+    let response = await axios.get(url, { headers })
+
+    monitorTypes = response.data
+
+    monitorTypes.getDefault = () => (monitorTypes.find(type => type.default))
+    monitorTypes.getList = () => (monitorTypes.map(type => type.name))
+    monitorTypes.getObject = () => (monitorTypes.reduce((acc, obj) => ({ ...acc, [obj.type]: obj.type }), {}))
+
+    return monitorTypes
 }
 
 export async function saveMonitor(id, monitor, token) {

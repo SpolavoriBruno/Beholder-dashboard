@@ -7,13 +7,6 @@ export const ORDER_STATUS = {
     EXPIRED: 'EXPIRED'
 }
 
-export const ORDER_TYPE = {
-    CANDLES: 'CANDLES',
-    MINI_TICKER: 'MINI_TICKER',
-    BOOK: 'BOOK',
-    USER_DATA: 'USER_DATA',
-}
-
 export const INTERVAL = {
     ONE_MINUTE: '1m',
     THREE_MINUTES: '3m',

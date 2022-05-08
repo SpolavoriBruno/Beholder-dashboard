@@ -4,7 +4,6 @@ import Pagination from "../../components/Pagination/Pagination"
 import { deleteMonitor, getMonitors, startMonitor, stopMonitor } from "../../services/MonitorService"
 import MonitorModal from "./MonitorModal"
 import MonitorRow from "./MonitorRow"
-import { ORDER_TYPE } from '../../utils/exchange'
 
 function Monitors() {
     const history = useHistory()
@@ -14,7 +13,7 @@ function Monitors() {
     const [page, setPage] = useState(getPage())
     const [monitors, setMonitors] = useState([])
     const [editMonitors, setEditMonitors] = useState({
-        type: ORDER_TYPE.CANDLES,
+        type: 'CANDLES',
         interval: '1m',
         isActive: false,
         logs: false
