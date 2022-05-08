@@ -5,23 +5,18 @@ import SymbolRow from './SymbolRow'
 import SelectQuote, { getDefaultQuote } from '../../components/SelectQuote/SelectQuote'
 import SymbolModal from './SymbolModal'
 import Pagination from '../../components/Pagination/Pagination'
+import { usePage } from '../../hooks/navigation'
 
 
 function Symbols() {
-    const history = useHistory()
-    const defaultLocation = useLocation()
+
     const [symbols, setSymbols] = useState([])
     const [error, setError] = useState(null)
     const [isSyncing, setIsSyncing] = useState(false)
     const [quote, setQuote] = useState(getDefaultQuote())
     const [editSymbol, setEditSymbol] = useState({})
     const [count, setCount] = useState(0)
-    const [page, setPage] = useState(getPage())
-
-    function getPage(location) {
-        if (!location) location = defaultLocation
-        return new URLSearchParams(location.search).get('page') || 1
-    }
+    const [page] = usePage()
 
     function onQuoteChange(event) {
         setQuote(event.target.value)
@@ -68,10 +63,6 @@ function Symbols() {
     }
 
     useEffect(() => {
-        return history.listen(location => setPage(getPage(location)))
-    }, [history])
-
-    useEffect(() => {
         loadSymbols(quote)
     }, [isSyncing, quote, page])
 
@@ -111,7 +102,7 @@ function Symbols() {
                             <tfoot>
                                 <tr>
                                     <td colSpan="5">
-                                        <Pagination count={count} page={page} />
+                                        <Pagination count={count} />
                                     </td>
                                     <td colSpan="1" className="text-center">
                                         <button className="btn btn-primary animate-up-2" type="button" onClick={onSyncClick}>

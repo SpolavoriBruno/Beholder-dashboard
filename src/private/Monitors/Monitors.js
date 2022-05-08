@@ -1,16 +1,16 @@
 import React, { useEffect, useState } from "react"
-import { useHistory, useLocation } from "react-router-dom"
+import { useHistory } from "react-router-dom"
 import Pagination from "../../components/Pagination/Pagination"
+import { usePage } from "../../hooks/navigation"
 import { deleteMonitor, getMonitors, startMonitor, stopMonitor } from "../../services/MonitorService"
 import MonitorModal from "./MonitorModal"
 import MonitorRow from "./MonitorRow"
 
 function Monitors() {
     const history = useHistory()
-    const defaultLocation = useLocation()
 
     const [count, setCount] = useState(1)
-    const [page, setPage] = useState(getPage())
+    const [page] = usePage()
     const [monitors, setMonitors] = useState([])
     const [editMonitors, setEditMonitors] = useState({
         type: 'CANDLES',
@@ -18,11 +18,6 @@ function Monitors() {
         isActive: false,
         logs: false
     })
-
-    function getPage(location) {
-        if (!location) location = defaultLocation
-        return new URLSearchParams(location.search).get("page") || 1
-    }
 
     function onEditClick(event) {
         const id = event.target.id.split("/")[1]
@@ -56,7 +51,7 @@ function Monitors() {
                 history.go(0)
                 return prevState
             }
-            setCount(c => c + 1)
+            setCount(prevCount => prevCount + 1)
             return [...prevState, monitor]
         })
     }
@@ -64,12 +59,6 @@ function Monitors() {
     function newMonitorClick() {
         setEditMonitors({})
     }
-
-    useEffect(() => {
-        return history.listen(location => {
-            setPage(getPage(location))
-        })
-    }, [history])
 
     useEffect(() => {
         const token = localStorage.getItem("token")
@@ -114,7 +103,7 @@ function Monitors() {
                     }
                 </tbody>
             </table>
-            <Pagination count={count} page={page} />
+            <Pagination count={count} />
         </div>
         <MonitorModal data={editMonitors} onSubmit={onModalSubmit} />
     </main>)

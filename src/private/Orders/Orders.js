@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react"
-import { useHistory, useLocation, useParams } from "react-router-dom"
+import { useHistory, useParams } from "react-router-dom"
 
 import NewOrderModal from "../../components/NewOrder/NewOrderModal"
 import NewOrderButton from "../../components/NewOrder/NewOrderButton"
@@ -9,11 +9,11 @@ import OrderRow from "./OrderRow"
 import Pagination from "../../components/Pagination/Pagination"
 import SearchSymbol from "../../components/SearchSymbol/SearchSymbol"
 import ViewOrderModal from "./ViewOrderModal"
+import { usePage } from "../../hooks/navigation"
 
 
 function Orders() {
     const history = useHistory()
-    const defaultLocation = useLocation()
     const { symbol } = useParams()
 
     const [count, setCount] = useState(0)
@@ -21,15 +21,10 @@ function Orders() {
     const [viewOrder, setViewOrder] = useState({})
     const [orders, setOrders] = useState([])
     const [search, setSearch] = useState(symbol || '')
-    const [page, setPage] = useState(getLocation() || 1)
+    const [page] = usePage()
 
     function processError(error) {
         console.error(error.response?.data)
-    }
-
-    function getLocation(location) {
-        if (!location) location = defaultLocation
-        return new URLSearchParams(location.search).get('page')
     }
 
     function getBalancesCall(token) {
@@ -61,12 +56,6 @@ function Orders() {
         const id = +event.target.id.split('/')[1]
         setViewOrder(orders.find(order => order.id === id))
     }
-
-    useEffect(() => {
-        return history.listen(location => {
-            setPage(getLocation(location))
-        })
-    }, [history])
 
     useEffect(() => {
         const token = localStorage.getItem("token")
