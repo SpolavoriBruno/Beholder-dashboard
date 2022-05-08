@@ -3,7 +3,7 @@ import { Link } from "react-router-dom"
 
 import { useQuery } from "../../utils/query"
 
-const PAGE_SIZE = 15
+const PAGE_SIZE = 10
 
 /** 
  * Props:
