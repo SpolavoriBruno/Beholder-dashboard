@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react'
-import { useHistory, useLocation } from 'react-router-dom'
 import { syncSymbols, searchSymbols } from '../../services/SymbolService'
 import SymbolRow from './SymbolRow'
 import SelectQuote, { getDefaultQuote } from '../../components/SelectQuote/SelectQuote'
