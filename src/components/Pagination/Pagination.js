@@ -4,7 +4,7 @@ import { Link } from "react-router-dom"
 import { useQuery } from "../../utils/query"
 
 const PAGE_SIZE = 10
-
+const PAGES = 3
 /** 
  * Props:
  * - count
@@ -33,11 +33,20 @@ function Pagination(props) {
             <nav aria-label="Page Navigation">
                 <ul className="pagination mb-0">
                     {
-                        pages.map(page => (
-                            <li key={page} className={getPageClass(page)}>
-                                <Link className="page-link" to={getPageLink(page)}>{page}</Link>
-                            </li>
-                        ))
+                        pages.map(page => {
+                            const queryPage = query.get("page") || 1
+
+                            if (pages.length > 10) {
+
+                                if (page !== 1 && page !== pages.length && (page < queryPage - PAGES || page > +queryPage + PAGES))
+                                    return (<></>)
+                            }
+                            return (
+                                <li key={page} className={getPageClass(page)}>
+                                    <Link className="page-link" to={getPageLink(page)}>{page}</Link>
+                                </li>
+                            )
+                        })
                     }
                 </ul>
             </nav>
