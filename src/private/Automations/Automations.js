@@ -11,6 +11,7 @@ const DEFAULT_AUTOMATION = {
     name: '',
     indexes: '',
     conditions: '',
+    symbol: 'ETHBTC',
     isActive: false,
     logs: false
 }

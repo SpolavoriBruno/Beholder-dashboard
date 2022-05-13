@@ -2,8 +2,17 @@ import React, { useEffect, useRef, useState } from "react"
 import SelectSymbol from "../../../components/SelectSymbol/SelectSymbol"
 import SwitchInput from "../../../components/SwitchInput/SwitchInput"
 import { saveAutomation } from "../../../services/AutomationService"
+import { getBeholderIndexes } from "../../../services/BeholderService"
 import ActionsArea from "./ActionsArea/ActionsArea"
 import ConditionsArea from "./ConditionsArea/ConditionsArea"
+
+const DEFAULT_AUTOMATION = {
+    conditions: '',
+    schedule: '',
+    actions: [],
+    symbol: 'ETHBTC',
+    name: '',
+}
 
 /**
  * props
@@ -14,7 +23,7 @@ function AutomationModal(props) {
     const btnSave = useRef('')
 
     const [error, setError] = useState('')
-    const [automation, setAutomation] = useState({})
+    const [automation, setAutomation] = useState(DEFAULT_AUTOMATION)
     const [indexes, setIndexes] = useState([])
 
     function onSave() {
@@ -35,14 +44,32 @@ function AutomationModal(props) {
     }
 
     useEffect(() => {
+        if (!!error) setTimeout(() => {
+            setError('')
+        }, 7000)
+    }, [error])
+
+    useEffect(() => {
         setAutomation(props.data)
     }, [props.data])
 
     useEffect(() => {
-        if (!automation || !automation.symbol) return
+        if (!automation?.symbol) return
         const token = localStorage.getItem('token')
-        getBeholderMemory(automation.symbol, token)
-            .then()
+        getBeholderIndexes(automation.symbol, token)
+            .then(indexes => {
+                const filteredIndexes = indexes.filter(index => index.symbol === automation.symbol)
+
+                const baseWallet = indexes.filter(index => index.variable === 'WALLET' && automation.symbol.startsWith(index.symbol))
+                if (baseWallet[0])
+                    filteredIndexes.push(baseWallet[0])
+
+                const quoteWallet = indexes.filter(index => index.variable === 'WALLET' && automation.symbol.endsWith(index.symbol))
+                if (quoteWallet[0])
+                    filteredIndexes.push(quoteWallet[0])
+
+                setIndexes(filteredIndexes)
+            })
     }, [automation.symbol])
 
     return (<div className="modal fade" id="modalAutomation" tabIndex={-1} role="dialog" aria-labelledby="modalTitle" aria-hidden="true" >
@@ -75,19 +102,19 @@ function AutomationModal(props) {
                         </div>
                         <ul className="nav nav-tabs" id="tabs" role="tablist">
                             <li className="nav-item">
-                                <button className="nav-link active py-2 mb-1" type="button" id="conditions-tab" data-bs-toggle="tab" data-bs-target="#conditions" role="tab" aria-controls="conditions" aria-selected="true">
+                                <button className="nav-link active py-2" type="button" id="conditions-tab" data-bs-toggle="tab" data-bs-target="#conditions" role="tab" aria-controls="conditions" aria-selected="true">
                                     Conditions
                                 </button>
                             </li>
                             <li className="nav-item">
-                                <button className="nav-link py-2 mb-1" type="button" id="actions-tab" data-bs-toggle="tab" data-bs-target="#actions" role="tab" aria-controls="actions" aria-selected="true">
+                                <button className="nav-link py-2" type="button" id="actions-tab" data-bs-toggle="tab" data-bs-target="#actions" role="tab" aria-controls="actions" aria-selected="true">
                                     Actions
                                 </button>
                             </li>
                         </ul>
-                        <div className="tab-content px-3 mb-3" id="tabContent">
+                        <div className="tab-content px-3" id="tabContent">
                             <div className="tab-pane fade show active" id="conditions" role="tabpanel" aria-labelledby="conditions-tab">
-                                <ConditionsArea indexes={indexes} condition={automation.condition} symbol={automation.symbol} onChange={onConditionChange} />
+                                <ConditionsArea indexes={indexes} condition={automation.condition} symbol={automation.symbol} onChange={onInputChange} setError={setError} />
                             </div>
                             <div className="tab-pane fade" id="actions" role="tabpanel" aria-labelledby="actions-tab">
                                 <ActionsArea />
@@ -104,7 +131,7 @@ function AutomationModal(props) {
                     </div>
                 </div>
                 <div className="modal-footer">
-                    {error && <div className="alert alert-danger" role="alert">{error}</div>}
+                    {error && <div className="alert alert-danger py-1" role="alert">{error}</div>}
                     <button ref={btnSave} onClick={onSave} type="button" className="btn btn-success" >Save</button>
                 </div>
             </div>

@@ -70,7 +70,7 @@ function MonitorIndexes(props) {
             <div className="d-inline-flex align-content-start mt-3">
                 {
                     indexes.map(index => (
-                        <IndexBadge key={index} index={index} onRemove={onRemoveClick} />
+                        <IndexBadge key={index} index={index} text={index} onRemove={onRemoveClick} />
                     ))
                 }
             </div>

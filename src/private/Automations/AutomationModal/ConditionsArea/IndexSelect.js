@@ -20,9 +20,10 @@ function IndexSelect(props) {
         }
     }, [props.indexes])
 
-    return (<div className="input-group input-group-merge">
-        <span className="input-group-text bg-secondary">Index</span>
+    return (<div className="input-group input-group-merge my-2">
+        <span className="input-group-text bg-secondary">When</span>
         <select id="eval" className="form-control" onChange={props.onChange}>
+            <option value="" hidden>Select an Index</option>
             {indexes && indexes.map(item => (
                 <option key={`${item.symbol}:${item.variable}`} value={item.eval}>{getOptionText(item)}</option>
             ))}

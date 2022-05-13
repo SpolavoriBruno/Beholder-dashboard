@@ -67,6 +67,7 @@ function SelectSymbol(props) {
                     </svg>
                 </button>
                 <select ref={selectRef} id="symbol" className="form-select" onChange={props.onChange}>
+                    <option value="" hidden>Select a symbol</option>
                     {symbols.map(s => <option key={s} value={s}>{s}</option>)}
                 </select>
             </div>
