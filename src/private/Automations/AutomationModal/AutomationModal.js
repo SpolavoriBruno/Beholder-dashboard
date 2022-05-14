@@ -85,6 +85,9 @@ function AutomationModal(props) {
                             <div className="col-6 ">
                                 <SelectSymbol onChange={onInputChange} onlyFavorites="false" symbol={automation.symbol} />
                             </div>
+                            <div className="col-6">
+                                <input type="number" className="form-control" id="coolDown" placeholder="Cool Down" title="Cool Down: Interval between automation executions" value={automation.coolDown} onChange={onInputChange} />
+                            </div>
                         </div>
                         <div className="row mb-3">
                             <div className="col-12 ">
