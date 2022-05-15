@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react"
-import IndexBadge from "../../components/IndexBadge/IndexBadge"
+import SmartBadge from "../../components/SmartBadge/SmartBadge"
 import { getAnalysisIndexes } from "../../services/BeholderService"
 
 /** 
@@ -87,7 +87,7 @@ function MonitorIndexes(props) {
             <div className="divScrollBadges">
                 <div className="d-inline-flex align-content-start mt-3">
                     {indexes.map(index => (
-                        <IndexBadge key={index} index={index} text={index} onRemove={onRemoveClick} />
+                        <SmartBadge key={index} index={index} text={index} onRemove={onRemoveClick} />
                     ))}
                 </div>
             </div>

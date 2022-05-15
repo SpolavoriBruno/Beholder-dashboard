@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react"
-import IndexBadge from "../../../../components/IndexBadge/IndexBadge"
+import SmartBadge from "../../../../components/SmartBadge/SmartBadge"
 import IndexSelect from "./IndexSelect"
 import VariableInput from "./VariableInput"
 
@@ -127,7 +127,7 @@ function ConditionsArea(props) {
             <div className="divScrollBadges">
                 <div className="d-inline-flex flex-row align-content-start">
                     {conditions.map((condition, i) => (
-                        <IndexBadge key={i} id={condition.eval} text={condition.text} onRemove={onRemoveCondition} />
+                        <SmartBadge key={i} id={condition.eval} text={condition.text} onRemove={onRemoveCondition} />
                     ))}
                 </div>
             </div>
