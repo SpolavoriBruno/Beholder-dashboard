@@ -13,3 +13,13 @@ export async function getBeholderIndexes(symbol, token) {
 
     return response.data
 }
+
+export async function getAnalysisIndexes(token) {
+    let url = `${BEHOLDER_URL}/indexes`
+    const headers = {
+        'authorization': token
+    }
+    const response = await axios.get(url, { headers })
+
+    return response.data
+}

@@ -85,7 +85,7 @@ function MonitorModal(props) {
                         </div>
                         <div className="row mt-3">
                             {monitor.type === monitorTypes.CANDLES &&
-                                <div className="col-6">
+                                <div className="col">
                                     <MonitorIndexes onChange={onInputChange} indexes={monitor.indexes} />
                                 </div>
                             }
