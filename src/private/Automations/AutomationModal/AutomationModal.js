@@ -33,13 +33,14 @@ function AutomationModal(props) {
                 btnClose.current.click()
                 if (props.onSubmit) props.onSubmit(result)
             }).catch(error => {
-                setError(error.response ? error.response.data : error.message)
-                console.error(error.response ? error.response.data : error.message)
+                console.error(error.response)
+                setError(error.response ? error.response.statusText : JSON.stringify(error))
             })
     }
 
     function onInputChange(event) {
         const { id, value } = event.target
+        console.log('onInputChange', automation)
         setAutomation(prevState => ({ ...prevState, [id]: value }))
     }
 
@@ -120,7 +121,7 @@ function AutomationModal(props) {
                                 <ConditionsArea indexes={indexes} conditions={automation.conditions} symbol={automation.symbol} onChange={onInputChange} setError={setError} />
                             </div>
                             <div className="tab-pane fade" id="actions" role="tabpanel" aria-labelledby="actions-tab">
-                                <ActionsArea />
+                                <ActionsArea actions={automation.actions} onChange={onInputChange} />
                             </div>
                         </div>
                         <div className="row mt-3">
