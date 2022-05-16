@@ -3,6 +3,7 @@ import { useHistory } from "react-router-dom"
 import Pagination from "../../components/Pagination/Pagination"
 import { usePage } from "../../hooks/navigation"
 import { deleteAutomation, getAutomations, startAutomation, stopAutomation } from "../../services/AutomationService"
+import Toast from "../../components/Toast/Toast"
 import AutomationModal from "./AutomationModal/AutomationModal"
 import AutomationRow from "./AutomationRow"
 import "./Automations.css"
@@ -22,44 +23,67 @@ function Automations() {
     const [count, setCount] = useState(1)
     const [automations, setAutomations] = useState([])
     const [editAutomations, setEditAutomations] = useState(DEFAULT_AUTOMATION)
+    const [notification, setNotification] = useState({})
 
     const [page] = usePage()
 
     function onEditClick(event) {
-        const id = event.target.id.split("/")[1]
+        const id = event.target.id.split('/')[1]
         setEditAutomations(automations.find(automation => automation.id == id))
     }
     function onStartClick(event) {
         const token = localStorage.getItem('token')
-        startAutomation(event.target.id.split('/')[1], token)
-            .then(() => { history.go(0) })
-            .catch(console.error)
+        const id = event.target.id.split('/')[1]
+
+        startAutomation(id, token)
+            .then(() => {
+                const i = automations.findIndex(a => a.id == id)
+                automations[i].isActive = true
+                setAutomations([...automations])
+            })
+            .catch(error => {
+                console.error(error)
+                setNotification({ type: 'error', text: error.response ? error.response.data : error.message })
+            })
     }
     function onStopClick(event) {
         const token = localStorage.getItem('token')
-        stopAutomation(event.target.id.split('/')[1], token)
-            .then(() => { history.go(0) })
-            .catch(console.error)
+        const id = event.target.id.split('/')[1]
+
+        stopAutomation(id, token)
+            .then(() => {
+                const i = automations.findIndex(a => a.id == id)
+                automations[i].isActive = false
+                setAutomations([...automations])
+            })
+            .catch(error => {
+                console.error(error)
+                setNotification({ type: 'error', text: error.response ? error.response.data : error.message })
+            })
     }
     function onDeleteClick(event) {
         const token = localStorage.getItem('token')
-        deleteAutomation(event.target.id.split('/')[1], token)
-            .then(() => { history.go(0) })
-            .catch(console.error)
+        const id = event.target.id.split('/')[1]
+        deleteAutomation(id, token)
+            .then(() => {
+                const i = automations.findIndex(a => a.id == id)
+                automations.splice(i, 1)
+                setAutomations([...automations])
+            })
+            .catch(error => {
+                console.error(error)
+                setNotification({ type: 'error', text: error.response ? error.response.data : error.message })
+            })
     }
     function onModalSubmit(automation) {
-        setAutomations(prevState => {
-            const i = prevState.findIndex(m => m.id == automation.id)
-            if (i > -1) {
-                prevState[i] = automation
-
-                // TODO: update specific automation in JSX
-                history.go(0)
-                return prevState
-            }
-            setCount(c => c + 1)
-            return [...prevState, automation]
-        })
+        const i = automations.findIndex(m => m.id == automation.id)
+        if (i > -1) {
+            automations[i] = automation
+            return setAutomations([...automations])
+        }
+        setCount(c => c + 1)
+        setAutomations(prevState => [...prevState, automation])
+        setEditAutomations(DEFAULT_AUTOMATION)
     }
 
     function newAutomationClick() {
@@ -72,7 +96,10 @@ function Automations() {
             .then(result => {
                 setAutomations(result.rows)
                 setCount(result.count)
-            }).catch(console.error)
+            }).catch(error => {
+                console.error(error)
+                setNotification({ type: 'error', text: error.response ? error.response.data : error.message })
+            })
     }, [page])
 
     return (<main className="content">
@@ -102,16 +129,15 @@ function Automations() {
                     </tr>
                 </thead>
                 <tbody>
-                    {
-                        automations.map(automation => (
-                            <AutomationRow key={automation.id} data={automation} onEdit={onEditClick} onStart={onStartClick} onStop={onStopClick} onDelete={onDeleteClick} />
-                        ))
-                    }
+                    {automations.map(automation => (
+                        <AutomationRow key={automation.id} data={automation} onEdit={onEditClick} onStart={onStartClick} onStop={onStopClick} onDelete={onDeleteClick} />
+                    ))}
                 </tbody>
             </table>
             <Pagination count={count} />
         </div>
-        <AutomationModal data={editAutomations} onSubmit={onModalSubmit} />
+        <AutomationModal data={editAutomations} onSubmit={onModalSubmit} notify={setNotification} />
+        <Toast type={notification.type} text={notification.text} />
     </main>)
 }
 

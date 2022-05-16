@@ -5,14 +5,13 @@ import React, { useEffect, useRef, useState } from "react"
  * - selectedIndex
  * - indexes
  * - onAdd
+ * - notify
  */
 function VariableInput(props) {
     const variableRef = useRef('')
 
     const [indexes, setIndexes] = useState([])
-    const [index, setIndex] = useState({
-        example: "",
-    })
+    const [index, setIndex] = useState({ example: "" })
     const [variable, setVariable] = useState()
     const [operator, setOperator] = useState('==')
 
@@ -22,10 +21,10 @@ function VariableInput(props) {
 
     function onVariableChange(event) {
         const { value } = event.target
-        const ix = indexes.find(index => value.endsWith(index.variable))
+        const index = indexes.find(index => value.endsWith(index.variable))
 
-        if (ix && !value.endsWith("WALLET")) {
-            setVariable(ix.eval)
+        if (index && !value.endsWith("WALLET")) {
+            setVariable(index.eval)
         } else {
             setVariable(value)
         }
@@ -38,10 +37,10 @@ function VariableInput(props) {
 
     function onAddClick() {
         if (!index.eval || !operator || !variable) {
-            props.setError("Please fill in all fields")
+            props.notify({ type: 'error', text: "Please fill in all fields" })
+
             return
         }
-        props.setError('')
         const { text, value } = getExpression()
         const condition = {
             eval: `${index.eval}${operator}${value}`,

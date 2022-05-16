@@ -5,11 +5,11 @@ import { updateSymbol } from '../../services/SymbolService'
  * props:
  * - data
  * - onSubmit
+ * - notify
  */
 function SymbolModal(props) {
 
     const btnClose = useRef('')
-    const [error, setError] = useState('')
     const [symbol, setSymbol] = useState({})
 
     useEffect(() => {
@@ -33,12 +33,14 @@ function SymbolModal(props) {
         event.preventDefault()
         const token = localStorage.getItem('token')
         updateSymbol(symbol, token)
-            .then(result => {
-                setError('')
+            .then(_ => {
                 props.onSubmit({ target: { id: 'symbol', value: symbol } })
                 btnClose.current.click()
             })
-            .catch(err => setError(err.response ? err.response.data : err.message))
+            .catch(error => {
+                props.notify({ type: 'error', text: error.response ? error.response.data : error.message })
+                console.error(error)
+            })
     }
 
     return (
@@ -100,10 +102,6 @@ function SymbolModal(props) {
                             </div>
                         </div>
                         <div className="modal-footer">
-                            {
-                                error &&
-                                <div className="alert alert-danger">{error}</div>
-                            }
                             <button type="submit" className="btn btn-sm btn-primary">
                                 Save
                             </button>

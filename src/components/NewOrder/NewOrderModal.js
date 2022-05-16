@@ -13,8 +13,9 @@ import { placeOrder } from "../../services/OrdersService"
  * props:
  * - wallet
  * - onSubmit
+ * - notify
  */
-function NewOrderModal(props) {
+function NewOrderModal({ wallet, notify, onSubmit }) {
     const DEFAULT_ORDER = {
         symbol: 'BTCUSTD',
         price: 0,
@@ -25,12 +26,10 @@ function NewOrderModal(props) {
         type: ORDER_TYPES.MARKET,
     }
 
-
     const btnClose = useRef('')
     const btnSend = useRef('')
     const inputTotal = useRef('')
 
-    const [error, setError] = useState('')
     const [symbol, setSymbol] = useState({})
     const [book, setBook] = useState({ ask: 0, bid: 0 })
     const [order, setOrder] = useState(DEFAULT_ORDER)
@@ -57,28 +56,27 @@ function NewOrderModal(props) {
         return STOP_TYPES.indexOf(orderType) === -1 ? 'col-md-6 d-none' : 'col-md-6'
     }
 
-    function onSubmit(event) {
+    function onSave() {
         const token = localStorage.getItem('token')
         placeOrder(order, token)
             .then(result => {
                 btnClose.current.click()
-                props.onSubmit && props.onSubmit(result)
+                onSubmit && onSubmit(result)
             })
             .catch(error => {
-                setError(error.message)
+                notify({ type: 'error', text: error.response ? error.response.data : error.message })
                 console.error(error)
             })
     }
 
     useEffect(() => {
-        setError('')
         btnSend.current.disabled = false
 
         const quantity = parseFloat(order.quantity) || parseFloat(symbol.minLotSize)
 
         if (quantity < parseFloat(symbol.minLotSize)) {
             btnSend.current.disabled = true
-            return setError('Quantity must be greater than ' + symbol.minLotSize)
+            return notify({ type: 'error', text: 'Quantity must be greater than ' + symbol.minLotSize })
         }
 
         if (order.type === ORDER_TYPES.ICEBERG) {
@@ -86,7 +84,7 @@ function NewOrderModal(props) {
 
             if (icebergQty && icebergQty < parseFloat(symbol.minLotSize)) {
                 btnSend.current.disabled = true
-                return setError('Quantity(I) must be greater than ' + symbol.minLotSize)
+                return notify({ type: 'error', text: 'Quantity(I) must be greater than ' + symbol.minLotSize })
             }
         }
 
@@ -108,7 +106,7 @@ function NewOrderModal(props) {
 
         if (total < minNotional) {
             btnSend.current.disabled = true
-            return setError('Min Notional must be greater than ' + minNotional)
+            return notify({ type: 'error', text: 'Min Notional must be greater than ' + minNotional })
         }
     }, [order.quantity, order.price, order.icebergQty, order.type, order.side])
 
@@ -117,7 +115,10 @@ function NewOrderModal(props) {
         const token = localStorage.getItem('token')
         getSymbol(order.symbol, token)
             .then(symbolObject => setSymbol(symbolObject))
-            .catch(console.error)
+            .catch(error => {
+                notify({ type: 'error', text: error.response ? error.response.data : error.message })
+                console.error(error)
+            })
     }, [order.symbol])
 
     useEffect(() => {
@@ -129,7 +130,7 @@ function NewOrderModal(props) {
         modal.addEventListener('show.bs.modal', event => {
             setIsSymbolPriceVisible(true)
         })
-    }, [props.wallet])
+    }, [wallet])
 
     return (
         <div className="modal fade" id="modalOrder" tabIndex="-1" role="dialog" aria-labelledby="modalOrderLabel" aria-hidden="true">
@@ -152,7 +153,7 @@ function NewOrderModal(props) {
                                     }
                                 </div>
                             </div>
-                            <WalletSumary wallet={props.wallet} symbol={symbol} />
+                            <WalletSumary wallet={wallet} symbol={symbol} />
                             <div className="row mb-4">
                                 <div className="col-md-6">
                                     <SelectSide onChange={onInputChange} side={order.side} />
@@ -169,12 +170,12 @@ function NewOrderModal(props) {
                                     </div>
                                 </div>
                                 <div className="col-md-6">
-                                    <QuantityInput id="quantity" text="Quantity" symbol={symbol} wallet={props.wallet} price={order.price} side={order.side} onChange={onInputChange} />
+                                    <QuantityInput id="quantity" text="Quantity" symbol={symbol} wallet={wallet} price={order.price} side={order.side} onChange={onInputChange} />
                                 </div>
                             </div>
                             <div className="row mb-4">
                                 <div className={getIcebergClasses(order.type)}>
-                                    <QuantityInput id="icebergQty" text="Iceberg Quantity" symbol={symbol} wallet={props.wallet} price={order.price} side={order.side} onChange={onInputChange} />
+                                    <QuantityInput id="icebergQty" text="Iceberg Quantity" symbol={symbol} wallet={wallet} price={order.price} side={order.side} onChange={onInputChange} />
                                 </div>
                                 <div className={getStopPriceClasses(order.type)}>
                                     <label htmlFor="stopPrice">Stop Price</label>
@@ -188,10 +189,7 @@ function NewOrderModal(props) {
                         </div>
                     </div>
                     <div className="modal-footer">
-                        {error &&
-                            <div className="alert alert-danger mt-1 col-9 py-1" role="alert">{error}</div>
-                        }
-                        <button type="button" ref={btnSend} className="btn btn-sm btn-primary" onClick={onSubmit}>Send</button>
+                        <button type="button" ref={btnSend} className="btn btn-sm btn-primary" onClick={onSave}>Save</button>
                     </div>
                 </div>
             </div>

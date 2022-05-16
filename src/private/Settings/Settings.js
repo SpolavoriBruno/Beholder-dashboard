@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useRef } from "react"
 
 import { getSettings, updateSettings } from "../../services/SettingsService"
+import Toast from "../../components/Toast/Toast"
 import Card from "./Card"
 import Symbols from "./Symbols"
 
@@ -14,9 +15,7 @@ function Settings() {
     const inputAccessKey = useRef(null)
     const inputSecretKey = useRef(null)
 
-    const [error, setError] = useState('')
-    const [success, setSuccess] = useState('')
-
+    const [notification, setNotification] = useState({})
 
     useEffect(() => {
         const token = localStorage.getItem('token')
@@ -28,7 +27,7 @@ function Settings() {
                 inputAccessKey.current.value = settings.accessKey
             })
             .catch(error => {
-                setError(error.response?.data)
+                setNotification({ type: 'error', text: error.response ? error.response.data : error.message })
             })
     }, [])
 
@@ -36,7 +35,7 @@ function Settings() {
         event.preventDefault()
 
         if (inputNewPassword?.current?.value !== inputConfirmNewPassword?.current?.value) {
-            setError('As senhas não conferem')
+            setNotification({ type: 'error', text: 'The passwords do not match' })
             return
         }
 
@@ -51,20 +50,17 @@ function Settings() {
         }, token)
             .then(result => {
                 if (result) {
-                    setError(null)
-                    setSuccess('Settings updated successfully')
-
+                    setNotification({ type: 'success', text: 'Settings updated successfully' })
                     inputSecretKey.current.value = ''
                     inputNewPassword.current.value = ''
                     inputConfirmNewPassword.current.value = ''
                 } else {
-                    setSuccess(null)
-                    setError('Cant update settings')
+                    setNotification({ type: 'error', text: 'Cant update settings' })
                 }
             })
             .catch(error => {
                 console.error(error)
-                setError(error?.response?.data || 'Cant update settings')
+                setNotification({ type: 'error', text: error.response ? error.response.data : 'Cant update settings' })
             })
     }
 
@@ -76,15 +72,6 @@ function Settings() {
             <div className="row">
                 <div className="col-12">
                     <form onSubmit={onFormSubmit}>
-                        <div className="d-flex justify-content-center flex-wrap flex-md-nowrap">
-                            {
-                                error &&
-                                <div className="alert alert-danger text-center mt-2 col-9 py-2">{error}</div>
-                            }
-                            {
-                                success && <div className="alert alert-success text-center mt-2 col-9 py-2">{success}</div>
-                            }
-                        </div>
                         <div className="d-flex justify-content-center flex-wrap flex-md-nowrap">
                             <Card title="General Info">
                                 <div className="row">
@@ -155,7 +142,7 @@ function Settings() {
                 <Symbols />
             </div>
         </main>
-
+        <Toast type={notification.type} text={notification.text} />
     </React.Fragment>)
 }
 

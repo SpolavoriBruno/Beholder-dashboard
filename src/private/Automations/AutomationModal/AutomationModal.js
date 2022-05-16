@@ -16,13 +16,12 @@ const DEFAULT_AUTOMATION = {
 
 /**
  * props
- * -
+ * - notify
  */
 function AutomationModal(props) {
     const btnClose = useRef('')
     const btnSave = useRef('')
 
-    const [error, setError] = useState('')
     const [automation, setAutomation] = useState(DEFAULT_AUTOMATION)
     const [indexes, setIndexes] = useState([])
 
@@ -31,24 +30,17 @@ function AutomationModal(props) {
         saveAutomation(automation.id, automation, token)
             .then(result => {
                 btnClose.current.click()
-                if (props.onSubmit) props.onSubmit(result)
+                props.onSubmit && props.onSubmit(result)
             }).catch(error => {
                 console.error(error.response)
-                setError(error.response ? error.response.statusText : JSON.stringify(error))
+                props.notify({ type: 'error', text: error.response ? error.response.data : error.message })
             })
     }
 
     function onInputChange(event) {
         const { id, value } = event.target
-        console.log('onInputChange', automation)
         setAutomation(prevState => ({ ...prevState, [id]: value }))
     }
-
-    useEffect(() => {
-        if (!!error) setTimeout(() => {
-            setError('')
-        }, 7000)
-    }, [error])
 
     useEffect(() => {
         setAutomation(props.data)
@@ -118,7 +110,7 @@ function AutomationModal(props) {
                         </ul>
                         <div className="tab-content px-3" id="tabContent">
                             <div className="tab-pane fade show active" id="conditions" role="tabpanel" aria-labelledby="conditions-tab">
-                                <ConditionsArea indexes={indexes} conditions={automation.conditions} symbol={automation.symbol} onChange={onInputChange} setError={setError} />
+                                <ConditionsArea indexes={indexes} conditions={automation.conditions} symbol={automation.symbol} onChange={onInputChange} notify={props.notify} />
                             </div>
                             <div className="tab-pane fade" id="actions" role="tabpanel" aria-labelledby="actions-tab">
                                 <ActionsArea actions={automation.actions} onChange={onInputChange} />
@@ -135,7 +127,6 @@ function AutomationModal(props) {
                     </div>
                 </div>
                 <div className="modal-footer">
-                    {error && <div className="alert alert-danger py-1" role="alert">{error}</div>}
                     <button ref={btnSave} onClick={onSave} type="button" className="btn btn-success" >Save</button>
                 </div>
             </div>

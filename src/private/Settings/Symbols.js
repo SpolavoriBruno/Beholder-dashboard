@@ -6,11 +6,13 @@ import SymbolModal from './SymbolModal'
 import Pagination from '../../components/Pagination/Pagination'
 import { usePage } from '../../hooks/navigation'
 
-
-function Symbols() {
+/**
+ * props
+ * - notify
+ */
+function Symbols({ notify }) {
 
     const [symbols, setSymbols] = useState([])
-    const [error, setError] = useState(null)
     const [isSyncing, setIsSyncing] = useState(false)
     const [quote, setQuote] = useState(getDefaultQuote())
     const [editSymbol, setEditSymbol] = useState({})
@@ -21,16 +23,16 @@ function Symbols() {
         setQuote(event.target.value)
     }
 
-    function onSyncClick(event) {
+    function onSyncClick() {
         const token = localStorage.getItem('token')
         setIsSyncing(true)
         syncSymbols(token)
-            .then(data => {
+            .then(_ => {
                 setIsSyncing(false)
             })
             .catch(error => {
-                console.error(error.response?.data)
-                setError(error.message)
+                notify({ type: 'error', text: error.response ? error.response.data : error.message })
+                console.error(error)
             })
     }
 
@@ -49,8 +51,8 @@ function Symbols() {
                 setCount(result.count)
             })
             .catch(error => {
+                notify({ type: 'error', text: error.response ? error.response.data : error.message })
                 console.error(error)
-                setError(error.message)
             })
     }
 
@@ -67,10 +69,6 @@ function Symbols() {
 
     return (<React.Fragment>
         <div className="row">
-            {
-                error &&
-                <div className="col-12 alert alert-danger text-center mt-2 col-9 py-2">{error}</div>
-            }
             <div className="col-12">
                 <div className='card border-0 shadow' >
                     <div className='card-header text-center'>

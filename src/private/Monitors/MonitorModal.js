@@ -10,13 +10,13 @@ import SelectInterval from "./SelectInterval"
  * props
  * - data
  * - onSubmit
+ * - notify
  */
 function MonitorModal(props) {
     const btnClose = useRef('')
     const btnSave = useRef('')
 
     const [monitorTypes, setMonitorTypes] = useState({})
-    const [error, setError] = useState('')
     const [monitor, setMonitor] = useState({
         type: 'CANDLES',
     })
@@ -28,7 +28,7 @@ function MonitorModal(props) {
                 btnClose.current.click()
                 if (props.onSubmit) props.onSubmit(result)
             }).catch(error => {
-                setError(error.response?.data)
+                props.notify({ type: 'error', text: error.response ? error.response.data : error.message })
                 console.error(error)
             })
     }
@@ -101,12 +101,6 @@ function MonitorModal(props) {
                     </div>
                 </div>
                 <div className="modal-footer">
-                    {
-                        error &&
-                        <div className="alert alert-danger col-8" role="alert">
-                            {error}
-                        </div>
-                    }
                     <button ref={btnSave} type="button" className="btn btn-success btn-sm" onClick={onSubmit}>
                         <svg className="icon icon-xs" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />

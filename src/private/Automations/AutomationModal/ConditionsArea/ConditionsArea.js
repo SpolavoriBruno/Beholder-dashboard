@@ -9,6 +9,7 @@ import VariableInput from "./VariableInput"
  * - symbol
  * - conditions
  * - onChange
+ * - notify
  */
 function ConditionsArea(props) {
     const [indexes, setIndexes] = useState([])
@@ -120,7 +121,7 @@ function ConditionsArea(props) {
         <div className="row">
             <div className="col-12">
                 <IndexSelect indexes={indexes} onChange={onKeySelectChange} />
-                <VariableInput indexes={indexes} selectedIndex={selectedIndex} onAdd={onAddCondition} setError={props.setError} />
+                <VariableInput indexes={indexes} selectedIndex={selectedIndex} onAdd={onAddCondition} notify={props.notify} />
             </div>
         </div>
         {conditions.length > 0 &&

@@ -11,6 +11,7 @@ const DEFAULT_ACTION = {
  * props
  * - actions
  * - onChange
+ * - notify
  */
 function ActionsArea(props) {
 
@@ -29,9 +30,6 @@ function ActionsArea(props) {
         actions.push(newAction)
         setActions(actions)
         props.onChange && props.onChange({ target: { id: 'actions', value: actions } })
-        // setActions(prevState => {
-        //     return [...prevState, newAction]
-        // })
         setNewAction(DEFAULT_ACTION)
     }
 

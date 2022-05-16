@@ -8,6 +8,7 @@ import { getOrders } from "../../services/OrdersService"
 import OrderRow from "./OrderRow"
 import Pagination from "../../components/Pagination/Pagination"
 import SearchSymbol from "../../components/SearchSymbol/SearchSymbol"
+import Toast from "../../components/Toast/Toast"
 import ViewOrderModal from "./ViewOrderModal"
 import { usePage } from "../../hooks/navigation"
 
@@ -22,17 +23,18 @@ function Orders() {
     const [orders, setOrders] = useState([])
     const [search, setSearch] = useState(symbol || '')
     const [page] = usePage()
+    const [notification, setNotification] = useState({})
 
-    function processError(error) {
-        console.error(error.response?.data)
-    }
 
     function getBalancesCall(token) {
         getBalance(token)
             .then(balances => {
                 setBalances(balances)
             })
-            .catch(processError)
+            .catch((error) => {
+                console.error(error)
+                setNotification({ type: 'error', text: error.response ? error.response.data : error.message })
+            })
     }
 
     function getOrdersCall(token) {
@@ -41,7 +43,10 @@ function Orders() {
                 setOrders(result.rows)
                 setCount(result.count)
             })
-            .catch(processError)
+            .catch((error) => {
+                console.error(error)
+                setNotification({ type: 'error', text: error.response ? error.response.data : error.message })
+            })
     }
 
     function onOrderSubmit(order) {
@@ -101,8 +106,9 @@ function Orders() {
                 <Pagination count={count} />
             </div>
         </main>
-        <NewOrderModal wallet={balances} onSubmit={onOrderSubmit} />
+        <NewOrderModal wallet={balances} onSubmit={onOrderSubmit} notify={setNotification} />
         <ViewOrderModal data={viewOrder} />
+        <Toast type={notification.type} text={notification.text} />
     </React.Fragment>)
 }
 
