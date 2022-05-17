@@ -137,8 +137,8 @@ function Settings() {
                             <div className="row">
                                 <div className="col-6 mb-3">
                                     <div className="form-group">
-                                        <label htmlFor="sendgridKey">Sendgrid Key</label>
-                                        <input className="form-control" id="sendgridKey" type="password"
+                                        <label htmlFor="sendGridKey">Sendgrid Key</label>
+                                        <input className="form-control" id="sendGridKey" type="password"
                                             placeholder="Sendgrid API Key" onChange={onInputChange} />
                                     </div>
                                 </div>
