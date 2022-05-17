@@ -39,7 +39,7 @@ function Pagination(props) {
                             if (pages.length > 10) {
 
                                 if (page !== 1 && page !== pages.length && (page < queryPage - PAGES || page > +queryPage + PAGES))
-                                    return (<></>)
+                                    return null
                             }
                             return (
                                 <li key={page} className={getPageClass(page)}>
