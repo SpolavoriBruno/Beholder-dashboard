@@ -53,8 +53,6 @@ function MonitorIndexes(props) {
         if (!props.indexes) return
         setIndexes(props.indexes.split(","))
     }, [props.indexes])
-
-
     useEffect(() => {
         selectRef.current && (selectRef.current.value = props.indexes)
         props.onChange({ target: { id: 'indexes', value: props.indexes } })

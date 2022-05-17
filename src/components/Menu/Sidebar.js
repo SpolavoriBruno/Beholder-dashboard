@@ -4,8 +4,6 @@ import { useHistory } from "react-router-dom"
 import SidebarItem from "./SidebarItem"
 
 import { doLogout } from '../../services/AuthService'
-
-
 function Sidebar() {
     const history = useHistory()
 

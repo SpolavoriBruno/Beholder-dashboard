@@ -1,6 +1,4 @@
 import React from "react"
-
-
 function SearchSymbol(props) {
     return (
         <form className="navbar-search form-inline" id="navbar-search-main">

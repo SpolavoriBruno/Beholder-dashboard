@@ -41,8 +41,6 @@ function OrderRow(props) {
                 </svg>
             </button>
         </td>
-
-
     </tr>)
 }
 

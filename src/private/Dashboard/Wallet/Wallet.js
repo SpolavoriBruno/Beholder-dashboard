@@ -5,8 +5,6 @@ import "../Dashboard.css"
 export default function Wallet(props) {
 
     const [balances, setBalances] = useState([])
-
-
     useEffect(() => {
         const token = localStorage.getItem('token')
         getBalance(token)

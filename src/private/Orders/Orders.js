@@ -11,8 +11,6 @@ import SearchSymbol from "../../components/SearchSymbol/SearchSymbol"
 import Toast from "../../components/Toast/Toast"
 import ViewOrderModal from "./ViewOrderModal"
 import { usePage } from "../../hooks/navigation"
-
-
 function Orders() {
     const history = useHistory()
     const { symbol } = useParams()
@@ -24,8 +22,6 @@ function Orders() {
     const [search, setSearch] = useState(symbol || '')
     const [page] = usePage()
     const [notification, setNotification] = useState({})
-
-
     function getBalancesCall(token) {
         getBalance(token)
             .then(balances => {

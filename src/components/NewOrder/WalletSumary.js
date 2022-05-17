@@ -6,8 +6,6 @@ import React, { useEffect, useMemo, useState } from "react"
  * - symbol
  */
 function WalletSumary(props) {
-
-
     function getBaseAsset() {
         if (!props.wallet || !Array.isArray(props.wallet)) return 0
 

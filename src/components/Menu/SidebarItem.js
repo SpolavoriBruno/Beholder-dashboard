@@ -1,6 +1,4 @@
 import { Link } from 'react-router-dom'
-
-
 function SidebarItem(props) {
     function getClassName(itemName) {
         const componentClass = 'nav-item d-flex justify-content-center '
