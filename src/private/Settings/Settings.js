@@ -6,54 +6,37 @@ import Card from "./Card"
 import Symbols from "./Symbols"
 
 function Settings() {
+    const confirmPassword = useRef(null)
 
-    const inputEmail = useRef(null)
-    const inputNewPassword = useRef(null)
-    const inputConfirmNewPassword = useRef(null)
-    const inputApiUrl = useRef(null)
-    const inputStreamUrl = useRef(null)
-    const inputAccessKey = useRef(null)
-    const inputSecretKey = useRef(null)
-
+    const [settings, setSettings] = useState({})
     const [notification, setNotification] = useState({})
+
+    function onInputChange(event) {
+        const { id, value } = event.target
+        setSettings(prevSettings => ({ ...prevSettings, [id]: value }))
+    }
 
     useEffect(() => {
         const token = localStorage.getItem('token')
         getSettings(token)
             .then(settings => {
-                inputEmail.current.value = settings.email
-                inputApiUrl.current.value = settings.apiUrl
-                inputStreamUrl.current.value = settings.streamUrl
-                inputAccessKey.current.value = settings.accessKey
+                setSettings(settings)
             })
             .catch(error => {
                 setNotification({ type: 'error', text: error.response ? error.response.data : error.message })
             })
     }, [])
 
-    function onFormSubmit(event) {
-        event.preventDefault()
-
-        if (inputNewPassword?.current?.value !== inputConfirmNewPassword?.current?.value) {
-            setNotification({ type: 'error', text: 'The passwords do not match' })
-            return
-        }
+    function onSave() {
+        if ((settings.password || confirmPassword.current.value)
+            && settings.password !== confirmPassword.current.value)
+            return setNotification({ type: 'error', text: 'The passwords do not match' })
 
         const token = localStorage.getItem('token')
-        updateSettings({
-            email: inputEmail.current.value,
-            password: inputNewPassword.current.value || null,
-            apiUrl: inputApiUrl.current.value,
-            streamUrl: inputStreamUrl.current.value,
-            accessKey: inputAccessKey.current.value,
-            secretKey: inputSecretKey.current.value || null
-        }, token)
+        updateSettings(settings, token)
             .then(result => {
                 if (result) {
                     setNotification({ type: 'success', text: 'Settings updated successfully' })
-                    inputSecretKey.current.value = ''
-                    inputNewPassword.current.value = ''
-                    inputConfirmNewPassword.current.value = ''
                 } else {
                     setNotification({ type: 'error', text: 'Cant update settings' })
                 }
@@ -71,71 +54,120 @@ function Settings() {
             </div>
             <div className="row">
                 <div className="col-12">
-                    <form onSubmit={onFormSubmit}>
-                        <div className="d-flex justify-content-center flex-wrap flex-md-nowrap">
-                            <Card title="General Info">
-                                <div className="row">
-                                    <div className="col-12 mb-3">
-                                        <div className="form-group">
-                                            <label htmlFor="email">Email</label>
-                                            <input ref={inputEmail} className="form-control" id="email" type="email" placeholder="Email" required />
-                                        </div>
+                    <div className="d-flex justify-content-center flex-wrap">
+                        <Card title="Personal Settings" onSubmit={onSave}>
+                            <div className="row">
+                                <div className="col-12 mb-3">
+                                    <div className="form-group">
+                                        <label htmlFor="email">Email</label>
+                                        <input className="form-control" id="email" type="email"
+                                            placeholder="Email" defaultValue={settings.email} onChange={onInputChange} />
                                     </div>
                                 </div>
-                                <div className="row">
-                                    <div className="col-12 mb-3">
-                                        <div className="form-group">
-                                            <label htmlFor="newPassword">New Password</label>
-                                            <input ref={inputNewPassword} className="form-control" id="newPassword" type="password" placeholder="New Password" />
-                                        </div>
+                            </div>
+                            <div className="row">
+                                <div className="col-12 mb-3">
+                                    <div className="form-group">
+                                        <label htmlFor="password">New Password</label>
+                                        <input className="form-control" id="password" type="password"
+                                            placeholder="New Password" onChange={onInputChange} />
                                     </div>
                                 </div>
-                                <div className="row">
-                                    <div className="col-12 mb-3">
-                                        <div className="form-group">
-                                            <label htmlFor="confirmPassword">Confirm Password</label>
-                                            <input ref={inputConfirmNewPassword} className="form-control" id="confirmPassword" type="password" placeholder="Confirm Password" />
-                                        </div>
+                            </div>
+                            <div className="row">
+                                <div className="col-12 mb-3">
+                                    <div className="form-group">
+                                        <label htmlFor="confirmPassword">Confirm Password</label>
+                                        <input ref={confirmPassword} className="form-control" id="confirmPassword" type="password"
+                                            placeholder="Confirm Password" onChange={onInputChange} />
                                     </div>
                                 </div>
-                            </Card>
+                            </div>
+                            <div className="row">
+                                <div className="col-12 mb-3">
+                                    <div className="form-group">
+                                        <label htmlFor="phone">Cellphone</label>
+                                        <input className="form-control" id="phone" type="tel"
+                                            placeholder="+5544987654321" defaultValue={settings.phone} onChange={onInputChange} />
+                                    </div>
+                                </div>
+                            </div>
+                        </Card>
 
-                            <Card title="API Settings">
-                                <div className="row">
-                                    <div className="col-sm-12 mb-3">
-                                        <div className="form-group">
-                                            <label htmlFor="apiUrl">API URL</label>
-                                            <input ref={inputApiUrl} className="form-control" id="apiUrl" type="text" placeholder="API URL" required />
-                                        </div>
+                        <Card title="Exchange Settings" onSubmit={onSave}>
+                            <div className="row">
+                                <div className="col-sm-12 mb-3">
+                                    <div className="form-group">
+                                        <label htmlFor="apiUrl">API URL</label>
+                                        <input className="form-control" id="apiUrl" type="text"
+                                            placeholder="API URL" defaultValue={settings.apiUrl} onChange={onInputChange} />
                                     </div>
                                 </div>
-                                <div className="row">
-                                    <div className="col-sm-12 mb-3">
-                                        <div className="form-group">
-                                            <label htmlFor="streamUrl">STREAM URL</label>
-                                            <input ref={inputStreamUrl} className="form-control" id="streamUrl" type="text" placeholder="STREAM URL" required />
-                                        </div>
+                            </div>
+                            <div className="row">
+                                <div className="col-sm-12 mb-3">
+                                    <div className="form-group">
+                                        <label htmlFor="streamUrl">STREAM URL</label>
+                                        <input className="form-control" id="streamUrl" type="text"
+                                            placeholder="STREAM URL" defaultValue={settings.streamUrl} onChange={onInputChange} />
                                     </div>
                                 </div>
-                                <div className="row">
-                                    <div className="col-sm-12 mb-3">
-                                        <div className="form-group">
-                                            <label htmlFor="accessKey">Access Key</label>
-                                            <input ref={inputAccessKey} className="form-control" id="accessKey" type="text" placeholder="ACCESS KEY" />
-                                        </div>
+                            </div>
+                            <div className="row">
+                                <div className="col-sm-12 mb-3">
+                                    <div className="form-group">
+                                        <label htmlFor="accessKey">Access Key</label>
+                                        <input className="form-control" id="accessKey" type="text"
+                                            placeholder="ACCESS KEY" defaultValue={settings.accessKey} onChange={onInputChange} />
                                     </div>
                                 </div>
-                                <div className="row">
-                                    <div className="col-sm-12 mb-3">
-                                        <div className="form-group">
-                                            <label htmlFor="secretKey">Secret Key</label>
-                                            <input ref={inputSecretKey} className="form-control" id="secretKey" type="password" placeholder="Update Secret Key" />
-                                        </div>
+                            </div>
+                            <div className="row">
+                                <div className="col-sm-12 mb-3">
+                                    <div className="form-group">
+                                        <label htmlFor="secretKey">Secret Key</label>
+                                        <input className="form-control" id="secretKey" type="password"
+                                            placeholder="Update Secret Key" onChange={onInputChange} />
                                     </div>
                                 </div>
-                            </Card>
-                        </div>
-                    </form>
+                            </div>
+                        </Card>
+
+                        <Card title="Notification Settings" width="49rem" onSubmit={onSave}>
+                            <div className="row">
+                                <div className="col-6 mb-3">
+                                    <div className="form-group">
+                                        <label htmlFor="sendgridKey">Sendgrid Key</label>
+                                        <input className="form-control" id="sendgridKey" type="password"
+                                            placeholder="Sendgrid API Key" onChange={onInputChange} />
+                                    </div>
+                                </div>
+                                <div className="col-6 mb-3">
+                                    <div className="form-group">
+                                        <label htmlFor="twilioSid">Twilio Sid</label>
+                                        <input className="form-control" id="twilioSid" type="text"
+                                            placeholder="Twilio Sid" defaultValue={settings.twilioSid} onChange={onInputChange} />
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="row">
+                                <div className="col-6 mb-3">
+                                    <div className="form-group">
+                                        <label htmlFor="twilioToken">Twilio Token</label>
+                                        <input className="form-control" id="twilioToken" type="password"
+                                            placeholder="Twilio Token" onChange={onInputChange} />
+                                    </div>
+                                </div>
+                                <div className="col-6 mb-3">
+                                    <div className="form-group">
+                                        <label htmlFor="twilioPhone">Twilio Phone</label>
+                                        <input className="form-control" id="twilioPhone" type="tel"
+                                            placeholder="+5544987654321" defaultValue={settings.twilioPhone} onChange={onInputChange} />
+                                    </div>
+                                </div>
+                            </div>
+                        </Card>
+                    </div>
                 </div>
             </div>
             <div className="d-flex justify-content-center">

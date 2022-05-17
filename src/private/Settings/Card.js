@@ -7,7 +7,7 @@ function Card(props) {
             <div className="card-body">
                 {props.children}
                 <div className="text-center">
-                    <button className="btn btn-primary animate-up-2" type="submit">Save</button>
+                    <button className="btn btn-primary animate-up-2" onClick={props.onSubmit}>Save</button>
                 </div>
             </div>
         </div>
