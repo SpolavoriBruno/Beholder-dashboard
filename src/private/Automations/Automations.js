@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react"
-import { useHistory } from "react-router-dom"
 import Pagination from "../../components/Pagination/Pagination"
 import { usePage } from "../../hooks/navigation"
 import { deleteAutomation, getAutomations, startAutomation, stopAutomation } from "../../services/AutomationService"
@@ -18,8 +17,6 @@ const DEFAULT_AUTOMATION = {
 }
 
 function Automations() {
-    const history = useHistory()
-
     const [count, setCount] = useState(1)
     const [automations, setAutomations] = useState([])
     const [editAutomations, setEditAutomations] = useState(DEFAULT_AUTOMATION)
