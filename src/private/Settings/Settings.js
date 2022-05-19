@@ -171,7 +171,7 @@ function Settings() {
                 </div>
             </div>
             <div className="d-flex justify-content-center">
-                <Symbols />
+                <Symbols notify={setNotification} />
             </div>
         </main>
         <Toast type={notification.type} text={notification.text} />
