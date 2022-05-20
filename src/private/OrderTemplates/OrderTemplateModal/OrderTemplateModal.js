@@ -89,7 +89,7 @@ function OrderTemplateModal({ wallet, notify, onSubmit, data }) {
 
     return (
         <div className="modal fade" id="modalOrderTemplate" tabIndex="-1" role="dialog" aria-labelledby="modalOrderLabelTemplate" aria-hidden="true">
-            <div className="modal-dialog modal-dialog-centered" role="document">
+            <div className="modal-dialog modal-dialog-centered modal-lg" role="document">
                 <div className="modal-content">
                     <div className="modal-header">
                         <h2 className="h5 modal-title" id="modalOrderLabelTemplate">{orderTemplate.id ? 'Edit' : 'New'} Template</h2>
@@ -98,8 +98,14 @@ function OrderTemplateModal({ wallet, notify, onSubmit, data }) {
                     <div className="modal-body">
                         <div className="container">
                             <div className="form-group row align-items-center mb-4">
-                                <div className="col-md-6">
+                                <div className="col-md-4">
                                     <SelectSymbol onChange={onInputChange} symbol={orderTemplate.symbol} label="Symbol" />
+                                </div>
+                                <div className="col-md-4">
+                                    <SelectSide onChange={onInputChange} side={orderTemplate.side} />
+                                </div>
+                                <div className="col-md-4">
+                                    <OrderType onChange={onInputChange} type={orderTemplate.type} />
                                 </div>
                             </div>
                             <div className="row mb-4">
@@ -109,16 +115,8 @@ function OrderTemplateModal({ wallet, notify, onSubmit, data }) {
                                 </div>
                             </div>
                             <div className="row mb-4">
-                                <div className="col-md-6">
-                                    <SelectSide onChange={onInputChange} side={orderTemplate.side} />
-                                </div>
-                                <div className="col-md-6">
-                                    <OrderType onChange={onInputChange} type={orderTemplate.type} />
-                                </div>
-                            </div>
-                            <div className="row mb-4">
                                 <div className="col-6">
-                                    <QuantityTemplate id="quantity" text="Quantity" quantity={orderTemplate.quantity} multiplier={orderTemplate.multiplier} onChange={onInputChange} />
+                                    <QuantityTemplate id="quantity" text="Quantity" quantity={orderTemplate.quantity} multiplier={orderTemplate.quantityMultiplier} onChange={onInputChange} />
                                 </div>
                                 <div className={getIcebergClasses(orderTemplate.type)}>
                                     <QuantityTemplate id="icebergQty" text="Iceberg Qty" quantity={orderTemplate.icebergQty} multiplier={orderTemplate.icebergQtyMultiplier} onChange={onInputChange} />

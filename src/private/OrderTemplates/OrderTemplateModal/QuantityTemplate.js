@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react"
+import React, { useEffect, useRef, useState } from "react"
 
 /**
  * props
@@ -24,9 +24,9 @@ function QuantityTemplate({ id, text, quantity, multiplier, onChange }) {
             <span className="badge bg-info" data-bs-toggle="tooltip" tada-bd-placement="top" title="'Wallet' Burn the Wallet | 'Min. Notional' Minimum trade allowed | Multiplier 1=100% ">?</span>
         </label>
         <div className="input-group">
-            <input ref={quantityRef} type='text' list="qtyOptions" className="form-control w-50" id={id} defaultValue={quantity} onChange={onChange} />
+            <input ref={quantityRef} type='text' list="qtyOptions" className="form-control w-50" id={id} onChange={onChange} />
             <span className="input-group-text bg-secondary">X</span>
-            <input type='text' className="form-control" id={`${id}Multiplier`} defaultValue={multiplier} onChange={onChange} />
+            <input type='number' className="form-control" id={`${id}Multiplier`} value={multiplier} onChange={onChange} />
             <datalist id="qtyOptions">
                 <option value="WALLET">Wallet</option>
                 <option value="MIN_NOTIONAL">Min. Notional</option>

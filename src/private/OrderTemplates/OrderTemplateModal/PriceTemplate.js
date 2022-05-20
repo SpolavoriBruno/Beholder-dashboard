@@ -29,7 +29,7 @@ function PriceTemplate({ id, text, indexes, price, multiplier, onChange }) {
         <div className="input-group">
             <input ref={priceRef} type='text' list="priceOptions" className="form-control w-50" id={id} onChange={onChange} />
             <span className="input-group-text bg-secondary">X</span>
-            <input type='text' className="form-control" id={`${id}Multiplier`} defaultValue={multiplier} onChange={onChange} />
+            <input type='number' className="form-control" id={`${id}Multiplier`} value={multiplier} onChange={onChange} />
             <datalist id="priceOptions">
                 {indexes && indexes.map(index =>
                     <option key={`${index.symbol}:${index.variable}`} value={index.eval}>{index.variable}</option>

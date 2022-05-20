@@ -6,7 +6,7 @@ import React from "react"
  * - onChange
  */
 function ActionsType(props) {
-    return (<select id="type" className="form-select" defaultValue={props.type} onChange={props.onChange}>
+    return (<select id="type" className="form-select" onChange={props.onChange}>
         <option value="ORDER">Place Order</option>
         <option value="ALERT_EMAIL">Alert Email</option>
         <option value="ALERT_SMS">Alert SMS</option>
