@@ -5,10 +5,10 @@ const STAR_COLOR = '#ffc107'
 
 /**
  * props:
- * - onChange
  * - symbol
  * - disabled
  * - onlyFavorites
+ * - onChange
  */
 function SelectSymbol(props) {
     const [symbols, setSymbols] = useState(['Loading...'])
@@ -68,7 +68,9 @@ function SelectSymbol(props) {
                 </button>
                 <select ref={selectRef} id="symbol" className="form-select" onChange={props.onChange}>
                     <option value="" hidden>Select a symbol</option>
-                    {symbols.map(s => <option key={s} value={s}>{s}</option>)}
+                    {Array.isArray(symbols) && symbols.map(s =>
+                        <option key={s} value={s}>{s}</option>
+                    )}
                 </select>
             </div>
         </div>
