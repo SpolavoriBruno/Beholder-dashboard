@@ -5,6 +5,7 @@ import Automations from "./private/Automations/Automations"
 import Dashboard from "./private/Dashboard/Dashboard"
 import Login from "./public/Login/Login"
 import Orders from "./private/Orders/Orders"
+import OrderTemplates from "./private/OrderTemplates/OrderTemplates"
 import Settings from "./private/Settings/Settings"
 import Monitors from "./private/Monitors/Monitors"
 import Menu from "./components/Menu/Menu"
@@ -40,6 +41,10 @@ function Routes() {
 
             <PrivateRoute path="/orders/:symbol?" >
                 <Orders />
+            </PrivateRoute>
+
+            <PrivateRoute path="/ordertemplates/:symbol?" >
+                <OrderTemplates />
             </PrivateRoute>
 
             <PrivateRoute path="/settings" >
