@@ -13,7 +13,6 @@ function PriceTemplate({ id, text, indexes, price, multiplier, onChange }) {
     const priceRef = useRef('')
 
     useEffect(() => {
-        console.log(price, indexes);
         if (!price) return
 
         const i = indexes.map(i => i.eval).indexOf(price)

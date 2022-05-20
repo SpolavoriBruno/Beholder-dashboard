@@ -38,7 +38,6 @@ function OrderTemplateModal({ wallet, notify, onSubmit, data }) {
 
     function onInputChange(event) {
         const { id, value } = event.target
-        console.log(id, value);
         setOrderTemplate(prevState => ({ ...prevState, [id]: value }))
     }
 
@@ -56,7 +55,6 @@ function OrderTemplateModal({ wallet, notify, onSubmit, data }) {
 
     function onSave() {
         const token = localStorage.getItem('token')
-        console.log(orderTemplate);
         saveOrderTemplate(orderTemplate.id, orderTemplate, token)
             .then(result => {
                 btnClose.current.click()
@@ -84,7 +82,6 @@ function OrderTemplateModal({ wallet, notify, onSubmit, data }) {
                     index.symbol === orderTemplate.symbol
                     && indexRegex.test(index.variable)
                 )
-                console.log(filteredIndexes);
                 setIndexes(filteredIndexes)
             })
             .catch(error => { })
