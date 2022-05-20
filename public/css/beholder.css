@@ -14,7 +14,7 @@ main.content {
 }
 
 .search-bar .form-control {
-  width: 250px;
+  width: 150px;
   transition: width 0.2s ease-in-out;
 }
 
