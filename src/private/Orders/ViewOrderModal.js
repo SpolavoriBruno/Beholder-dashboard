@@ -92,11 +92,11 @@ function ViewOrderModal(props) {
                     </div>
                     <div className="modal-body">
                         <div className="form-group">
-                            <div className="row">
-                                <div className="col-md-6 mb-3">
+                            <div className="row mb-3">
+                                <div className="col-md-6 ">
                                     <b>Symbol:</b> {order.symbol}
                                 </div>
-                                <div className="col-md-6 mb-3">
+                                <div className="col-md-6">
                                     <span className={getStatusClass(order.status)}>
                                         {order.status}
                                     </span>
@@ -106,72 +106,72 @@ function ViewOrderModal(props) {
                                     }
                                 </div>
                             </div>
-                            <div className="row">
-                                <div className="col-md-6 mb-3">
+                            <div className="row mb-3">
+                                <div className="col-md-6 ">
                                     <b>Beholder Id:</b> {order.id}
                                 </div>
                                 {
                                     order.automationId &&
-                                    <div className="col-md-6 mb-3">
-                                        <p>Automation Id:</p> {order.automationId}
+                                    <div className="col-md-6">
+                                        <b>Automation:</b> {order.automation?.name}
                                     </div>
                                 }
                             </div>
-                            <div className="row">
-                                <div className="col-12 mb-3">
+                            <div className="row mb-3">
+                                <div className="col-12 ">
                                     <b>Binance Ids:</b> {order.orderId} / {order.clientOrderId}
                                 </div>
                             </div>
-                            <div className="row">
-                                <div className="col-md-6 mb-3">
+                            <div className="row mb-3">
+                                <div className="col-md-6">
                                     <b>Side:</b> {order.side}
                                 </div>
-                                <div className="col-md-6 mb-3">
+                                <div className="col-md-6">
                                     <b>Type:</b> {order.type}
                                 </div>
                             </div>
-                            <div className="row">
-                                <div className="col-md-6 mb-3">
+                            <div className="row mb-3">
+                                <div className="col-md-6">
                                     <b>Quantity:</b> {order.quantity}
                                 </div>
-                                <div className="col-md-6 mb-3">
+                                <div className="col-md-6">
                                     <b>Unit Price:</b> {order.limitPrice}
                                 </div>
                             </div>
-                            <div className="row">
+                            <div className="row mb-3">
                                 {
                                     order.icebergQuantity &&
-                                    <div className="col-md-6 mb-3">
+                                    <div className="col-md-6">
                                         <b>Iceberg Qty:</b> {order.icebergQuantity}
                                     </div>
                                 }
                                 {
                                     order.stopPrice &&
-                                    <div className="col-md-6 mb-3">
+                                    <div className="col-md-6">
                                         <b>Stop Price:</b> {order.stopPrice}
                                     </div>
                                 }
-                                <div className="col-md-6 mb-3">
+                                <div className="col-md-6">
                                     <b>Avg Price:</b> {order.avgPrice}
                                 </div>
                             </div>
-                            <div className="row">
-                                <div className="col-md-6 mb-3">
+                            <div className="row mb-3">
+                                <div className="col-md-6">
                                     <b>Date:</b> {getDate(order.transactTime)}
                                 </div>
                             </div>
-                            <div className="row">
-                                <div className="col-md-6 mb-3">
+                            <div className="row mb-3">
+                                <div className="col-md-6">
                                     <b>Comission:</b> {order.commision}
                                 </div>
-                                <div className="col-md-6 mb-3">
+                                <div className="col-md-6">
                                     <b>Net:</b> {order.net}
                                 </div>
                             </div>
                             {
                                 order.obs &&
-                                <div className="row">
-                                    <div className="col-12 mb-3">
+                                <div className="row mb-3">
+                                    <div className="col-12">
                                         <b>Obs:</b> {order.obs}
                                     </div>
                                 </div>

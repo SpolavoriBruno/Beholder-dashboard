@@ -4,7 +4,7 @@ const API_URL = process.env.REACT_APP_API_URL
 const ORDER_TEMPLATES_URL = `${API_URL}/ordertemplates`
 
 export async function getOrderTemplates(symbol, page, token) {
-    const url = `${ORDER_TEMPLATES_URL}/${symbol || ''}?page=${page}`
+    const url = `${ORDER_TEMPLATES_URL}/${symbol || ''}${page ? `?page=${page}` : ''}`
     const headers = { 'authorization': token }
     const response = await axios.get(url, { headers })
 

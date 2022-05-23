@@ -14,6 +14,7 @@ function QuantityTemplate({ id, text, quantity, multiplier, onChange }) {
     useEffect(() => {
         if (!quantity) return
         if (quantity === "WALLET") quantityRef.current.value = "Wallet"
+        else if (quantity === "LAST_ORDER_QTY") quantityRef.current.value = "Last Order Qty"
         else if (quantity === "MIN_NOTIONAL") quantityRef.current.value = "Min. Notional"
         else quantityRef.current.value = quantity
     }, [quantity])
@@ -28,6 +29,7 @@ function QuantityTemplate({ id, text, quantity, multiplier, onChange }) {
             <span className="input-group-text bg-secondary">X</span>
             <input type='number' className="form-control" id={`${id}Multiplier`} value={multiplier} onChange={onChange} />
             <datalist id="qtyOptions">
+                <option value="LAST_ORDER_QTY">Last Order Qty</option>
                 <option value="WALLET">Wallet</option>
                 <option value="MIN_NOTIONAL">Min. Notional</option>
             </datalist>

@@ -76,7 +76,7 @@ function OrderTemplateModal({ wallet, notify, onSubmit, data }) {
 
         getBeholderIndexes(orderTemplate.symbol, token)
             .then(function (result) {
-                const indexRegex = /^(BOOK|LAST_CANDLE|LAST_ORDER|VWAP)/
+                const indexRegex = /^(BOOK|LAST_CANDLE|LAST_ORDER.(avgPrice|stopPrice|limitPrice|net)|VWAP)/
 
                 const filteredIndexes = result.filter(index =>
                     index.symbol === orderTemplate.symbol
@@ -99,7 +99,7 @@ function OrderTemplateModal({ wallet, notify, onSubmit, data }) {
                         <div className="container">
                             <div className="form-group row align-items-center mb-4">
                                 <div className="col-md-4">
-                                    <SelectSymbol onChange={onInputChange} symbol={orderTemplate.symbol} label="Symbol" />
+                                    <SelectSymbol onChange={onInputChange} symbol={orderTemplate.symbol} label="Symbol" disabled={orderTemplate.id > 0} />
                                 </div>
                                 <div className="col-md-4">
                                     <SelectSide onChange={onInputChange} side={orderTemplate.side} />

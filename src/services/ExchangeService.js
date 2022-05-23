@@ -3,6 +3,7 @@ import axios from "./BaseService"
 const API_URL = process.env.REACT_APP_API_URL
 
 export const STOP_TYPES = ["STOP_LOSS", "STOP_LOSS_LIMIT", "TAKE_PROFIT", "TAKE_PROFIT_LIMIT"]
+export const LIMIT_TYPES = ["LIMIT", "STOP_LOSS_LIMIT", "TAKE_PROFIT_LIMIT"]
 
 export const ORDER_SIDE = {
     BUY: "BUY",

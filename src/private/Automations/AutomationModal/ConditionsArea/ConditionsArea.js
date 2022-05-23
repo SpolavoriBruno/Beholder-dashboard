@@ -80,6 +80,7 @@ function ConditionsArea(props) {
             .join(',')
             .replaceAll("MEMORY['", "")
             .replaceAll("']", "")
+            .replaceAll('.current', '')
 
         return [...new Set(indexesStr.split(','))].join(',')
     }

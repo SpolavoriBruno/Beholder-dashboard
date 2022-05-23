@@ -84,13 +84,12 @@ function Orders() {
                 <table className="table table-hover">
                     <thead>
                         <tr>
-                            <th className="border-gray-200">Symbol</th>
+                            <th className="border-gray-200">Order</th>
                             <th className="border-gray-200">Date</th>
-                            <th className="border-gray-200">Side</th>
                             <th className="border-gray-200">Qty</th>
                             <th className="border-gray-200">Net</th>
                             <th className="border-gray-200">Status</th>
-                            <th className="border-gray-200">Details</th>
+                            <th className="border-gray-200">View</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -103,7 +102,7 @@ function Orders() {
             </div>
         </main>
         <NewOrderModal wallet={balances} onSubmit={onOrderSubmit} notify={setNotification} />
-        <ViewOrderModal data={viewOrder} />
+        <ViewOrderModal data={viewOrder} notify={setNotification} />
         <Toast type={notification.type} text={notification.text} />
     </React.Fragment>)
 }

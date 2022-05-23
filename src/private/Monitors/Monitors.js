@@ -110,7 +110,7 @@ function Monitors() {
                     </tr>
                 </thead>
                 <tbody>
-                    {
+                    {Array.isArray(monitors) &&
                         monitors.map(monitor => (
                             <MonitorRow key={monitor.id} data={monitor} onEdit={onEditClick} onStart={onStartClick} onStop={onStopClick} onDelete={onDeleteClick} />
                         ))
