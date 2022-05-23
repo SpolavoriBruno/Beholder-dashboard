@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useEffect, useState } from "react"
 
 /**
  * props
@@ -6,14 +6,19 @@ import React from "react"
  * - onChange
  */
 function ActionsType(props) {
-    return (<select id="type" className="form-select" onChange={props.onChange}>
-        <option value="ORDER">Place Order</option>
+    const [type, setType] = useState(props.type)
+    useEffect(() => {
+        setType(props.type)
+    }, [props.type])
+
+    return (<select id="type" className="form-select" value={type} onChange={props.onChange}>
         <option value="ALERT_EMAIL">Alert Email</option>
         <option value="ALERT_SMS">Alert SMS</option>
-        <option value="ALERT_PUSH">Alert Push</option>
-        <option value="ALERT_WEBHOOK">Alert Webhook</option>
-        <option value="ALERT_SLACK">Alert Slack</option>
-        <option value="ALERT_TELEGRAM">Alert Telegram</option>
+        <option value="ORDER">Place Order</option>
+        <option value="ALERT_TELEGRAM" disabled>Alert Telegram</option>
+        <option value="ALERT_SLACK" disabled>Alert Slack</option>
+        <option value="ALERT_PUSH" disabled>Alert Push</option>
+        <option value="ALERT_WEBHOOK" disabled>Webhook</option>
     </select>)
 }
 

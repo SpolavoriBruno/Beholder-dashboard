@@ -27,6 +27,7 @@ function AutomationModal(props) {
 
     function onSave() {
         const token = localStorage.getItem('token')
+        delete automation.actions.id
         saveAutomation(automation.id, automation, token)
             .then(result => {
                 btnClose.current.click()
@@ -113,7 +114,7 @@ function AutomationModal(props) {
                                 <ConditionsArea indexes={indexes} conditions={automation.conditions} symbol={automation.symbol} onChange={onInputChange} notify={props.notify} />
                             </div>
                             <div className="tab-pane fade" id="actions" role="tabpanel" aria-labelledby="actions-tab">
-                                <ActionsArea actions={automation.actions} onChange={onInputChange} />
+                                <ActionsArea actions={automation.actions} symbol={automation.symbol} onChange={onInputChange} />
                             </div>
                         </div>
                         <div className="row mt-3">
