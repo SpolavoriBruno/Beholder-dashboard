@@ -3,8 +3,10 @@ import React, { useEffect, useMemo } from "react"
 function CandleChart(props) {
     useEffect(() => {
         new window.TradingView.widget({
+            width: 1200,
+            height: 700,
             symbol: `BINANCE:${props.symbol}`,
-            autosize: true,
+            autosize: false,
             interval: "1",
             timezone: "America/Sao_Paulo",
             theme: "dark",
@@ -13,12 +15,15 @@ function CandleChart(props) {
             toolbar_bg: "#1F2937",
             enable_publishing: false,
             allow_symbol_change: false,
-            details: true,
+            details: false,
             withdateranges: false,
-            hide_side_toolbar: true,
-            hide_top_toolbar: true,
+            hide_side_toolbar: false,
+            hide_top_toolbar: false,
             studies: [
-                "RSI@tv-basicstudies"
+                "BB@tv-basicstudies",
+                "MACD@tv-basicstudies",
+                "RSI@tv-basicstudies",
+                "VWAP@tv-basicstudies"
             ],
             "container_id": "tradingview"
         })
