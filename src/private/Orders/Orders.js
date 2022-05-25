@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react"
 import { useHistory, useParams } from "react-router-dom"
-
 import NewOrderModal from "../../components/NewOrder/NewOrderModal"
 import NewOrderButton from "../../components/NewOrder/NewOrderButton"
 import { getBalance } from "../../services/ExchangeService"
@@ -8,9 +7,10 @@ import { getOrders } from "../../services/OrdersService"
 import OrderRow from "./OrderRow"
 import Pagination from "../../components/Pagination/Pagination"
 import SearchSymbol from "../../components/SearchSymbol/SearchSymbol"
-import Toast from "../../components/Toast/Toast"
+import { notify } from "../../components/Toast/Toast"
 import ViewOrderModal from "./ViewOrderModal"
 import { usePage } from "../../hooks/navigation"
+
 function Orders() {
     const history = useHistory()
     const { symbol } = useParams()
@@ -21,7 +21,6 @@ function Orders() {
     const [orders, setOrders] = useState([])
     const [search, setSearch] = useState(symbol || '')
     const [page] = usePage()
-    const [notification, setNotification] = useState({})
     function getBalancesCall(token) {
         getBalance(token)
             .then(balances => {
@@ -29,7 +28,7 @@ function Orders() {
             })
             .catch((error) => {
                 console.error(error)
-                setNotification({ type: 'error', text: error.response ? error.response.data : error.message })
+                notify({ type: 'error', text: error.response ? error.response.data : error.message })
             })
     }
 
@@ -41,7 +40,7 @@ function Orders() {
             })
             .catch((error) => {
                 console.error(error)
-                setNotification({ type: 'error', text: error.response ? error.response.data : error.message })
+                notify({ type: 'error', text: error.response ? error.response.data : error.message })
             })
     }
 
@@ -101,9 +100,8 @@ function Orders() {
                 <Pagination count={count} />
             </div>
         </main>
-        <NewOrderModal wallet={balances} onSubmit={onOrderSubmit} notify={setNotification} />
-        <ViewOrderModal data={viewOrder} notify={setNotification} />
-        <Toast type={notification.type} text={notification.text} />
+        <NewOrderModal wallet={balances} onSubmit={onOrderSubmit} />
+        <ViewOrderModal data={viewOrder} />
     </React.Fragment>)
 }
 

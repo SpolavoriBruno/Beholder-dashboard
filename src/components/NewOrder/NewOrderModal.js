@@ -8,14 +8,14 @@ import SelectSymbol from "../SelectSymbol/SelectSymbol"
 import SymbolPrice from "./SymbolPrice"
 import WalletSumary from "./WalletSumary"
 import { placeOrder } from "../../services/OrdersService"
+import { notify } from "../Toast/Toast"
 
 /**
  * props:
  * - wallet
  * - onSubmit
- * - notify
  */
-function NewOrderModal({ wallet, notify, onSubmit }) {
+function NewOrderModal({ wallet, onSubmit }) {
     const DEFAULT_ORDER = {
         symbol: 'BTCUSTD',
         price: 0,

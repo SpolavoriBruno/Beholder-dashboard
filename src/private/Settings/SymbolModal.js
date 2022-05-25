@@ -1,11 +1,11 @@
 import React, { useState, useEffect, useRef } from 'react'
+import { notify } from '../../components/Toast/Toast'
 import { updateSymbol } from '../../services/SymbolService'
 
 /**
  * props:
  * - data
  * - onSubmit
- * - notify
  */
 function SymbolModal(props) {
 
@@ -38,7 +38,7 @@ function SymbolModal(props) {
                 btnClose.current.click()
             })
             .catch(error => {
-                props.notify({ type: 'error', text: error.response ? error.response.data : error.message })
+                notify({ type: 'error', text: error.response ? error.response.data : error.message })
                 console.error(error)
             })
     }

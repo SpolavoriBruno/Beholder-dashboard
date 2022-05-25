@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react"
 import Pagination from "../../components/Pagination/Pagination"
 import { usePage } from "../../hooks/navigation"
 import { deleteAutomation, getAutomations, startAutomation, stopAutomation } from "../../services/AutomationService"
-import Toast from "../../components/Toast/Toast"
+import { notify } from "../../components/Toast/Toast"
 import AutomationModal from "./AutomationModal/AutomationModal"
 import AutomationRow from "./AutomationRow"
 import "./Automations.css"
@@ -20,7 +20,6 @@ function Automations() {
     const [count, setCount] = useState(1)
     const [automations, setAutomations] = useState([])
     const [editAutomations, setEditAutomations] = useState(DEFAULT_AUTOMATION)
-    const [notification, setNotification] = useState({})
 
     const [page] = usePage()
 
@@ -40,7 +39,7 @@ function Automations() {
             })
             .catch(error => {
                 console.error(error)
-                setNotification({ type: 'error', text: error.response ? error.response.data : error.message })
+                notify({ type: 'error', text: error.response ? error.response.data : error.message })
             })
     }
     function onStopClick(event) {
@@ -55,7 +54,7 @@ function Automations() {
             })
             .catch(error => {
                 console.error(error)
-                setNotification({ type: 'error', text: error.response ? error.response.data : error.message })
+                notify({ type: 'error', text: error.response ? error.response.data : error.message })
             })
     }
     function onDeleteClick(event) {
@@ -69,7 +68,7 @@ function Automations() {
             })
             .catch(error => {
                 console.error(error)
-                setNotification({ type: 'error', text: error.response ? error.response.data : error.message })
+                notify({ type: 'error', text: error.response ? error.response.data : error.message })
             })
     }
     function onModalSubmit(automation) {
@@ -95,7 +94,7 @@ function Automations() {
                 setCount(result.count)
             }).catch(error => {
                 console.error(error)
-                setNotification({ type: 'error', text: error.response ? error.response.data : error.message })
+                notify({ type: 'error', text: error.response ? error.response.data : error.message })
             })
     }, [page])
 
@@ -133,8 +132,7 @@ function Automations() {
             </table>
             <Pagination count={count} />
         </div>
-        <AutomationModal data={editAutomations} onSubmit={onModalSubmit} notify={setNotification} />
-        <Toast type={notification.type} text={notification.text} />
+        <AutomationModal data={editAutomations} onSubmit={onModalSubmit} notify={notify} />
     </main>)
 }
 

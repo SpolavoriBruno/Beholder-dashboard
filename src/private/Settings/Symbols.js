@@ -5,13 +5,10 @@ import SelectQuote, { getDefaultQuote } from '../../components/SelectQuote/Selec
 import SymbolModal from './SymbolModal'
 import Pagination from '../../components/Pagination/Pagination'
 import { usePage } from '../../hooks/navigation'
+import { notify } from '../../components/Toast/Toast'
 
-/**
- * props
- * - notify
- */
-function Symbols({ notify }) {
 
+function Symbols() {
     const [symbols, setSymbols] = useState([])
     const [isSyncing, setIsSyncing] = useState(false)
     const [quote, setQuote] = useState(getDefaultQuote())

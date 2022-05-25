@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from "react"
 import SelectSymbol from "../../../components/SelectSymbol/SelectSymbol"
 import SwitchInput from "../../../components/SwitchInput/SwitchInput"
+import { notify } from "../../../components/Toast/Toast"
 import { saveAutomation } from "../../../services/AutomationService"
 import { getBeholderIndexes } from "../../../services/BeholderService"
 import ActionsArea from "./ActionsArea/ActionsArea"
@@ -16,7 +17,7 @@ const DEFAULT_AUTOMATION = {
 
 /**
  * props
- * - notify
+ * - onSubmit
  */
 function AutomationModal(props) {
     const btnClose = useRef('')
@@ -34,7 +35,7 @@ function AutomationModal(props) {
                 props.onSubmit && props.onSubmit(result)
             }).catch(error => {
                 console.error(error.response)
-                props.notify({ type: 'error', text: error.response ? error.response.data : error.message })
+                notify({ type: 'error', text: error.response ? error.response.data : error.message })
             })
     }
 
@@ -111,7 +112,7 @@ function AutomationModal(props) {
                         </ul>
                         <div className="tab-content px-3" id="tabContent">
                             <div className="tab-pane fade show active" id="conditions" role="tabpanel" aria-labelledby="conditions-tab">
-                                <ConditionsArea indexes={indexes} conditions={automation.conditions} symbol={automation.symbol} onChange={onInputChange} notify={props.notify} />
+                                <ConditionsArea indexes={indexes} conditions={automation.conditions} symbol={automation.symbol} onChange={onInputChange} />
                             </div>
                             <div className="tab-pane fade" id="actions" role="tabpanel" aria-labelledby="actions-tab">
                                 <ActionsArea actions={automation.actions} symbol={automation.symbol} onChange={onInputChange} />

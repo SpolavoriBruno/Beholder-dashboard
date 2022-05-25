@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react"
 import useWebSocket from "react-use-websocket"
 
+export let notify
+
 function Toast({ type, text }) {
     const DEFAULT_NOTIFICATION = {
         type: '',
@@ -8,6 +10,10 @@ function Toast({ type, text }) {
     }
 
     const [notification, setNotification] = useState(DEFAULT_NOTIFICATION)
+
+    useEffect(() => {
+        notify = setNotification
+    }, [])
 
     useEffect(() => {
         if (!notification.text) return

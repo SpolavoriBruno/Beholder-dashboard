@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef } from "react"
 
 import { getSettings, updateSettings } from "../../services/SettingsService"
-import Toast from "../../components/Toast/Toast"
+import { notify } from "../../components/Toast/Toast"
 import Card from "./Card"
 import Symbols from "./Symbols"
 
@@ -9,7 +9,6 @@ function Settings() {
     const confirmPassword = useRef(null)
 
     const [settings, setSettings] = useState({})
-    const [notification, setNotification] = useState({})
 
     function onInputChange(event) {
         const { id, value } = event.target
@@ -23,27 +22,27 @@ function Settings() {
                 setSettings(settings)
             })
             .catch(error => {
-                setNotification({ type: 'error', text: error.response ? error.response.data : error.message })
+                notify({ type: 'error', text: error.response ? error.response.data : error.message })
             })
     }, [])
 
     function onSave() {
         if ((settings.password || confirmPassword.current.value)
             && settings.password !== confirmPassword.current.value)
-            return setNotification({ type: 'error', text: 'The passwords do not match' })
+            return notify({ type: 'error', text: 'The passwords do not match' })
 
         const token = localStorage.getItem('token')
         updateSettings(settings, token)
             .then(result => {
                 if (result) {
-                    setNotification({ type: 'success', text: 'Settings updated successfully' })
+                    notify({ type: 'success', text: 'Settings updated successfully' })
                 } else {
-                    setNotification({ type: 'error', text: 'Cant update settings' })
+                    notify({ type: 'error', text: 'Cant update settings' })
                 }
             })
             .catch(error => {
                 console.error(error)
-                setNotification({ type: 'error', text: error.response ? error.response.data : 'Cant update settings' })
+                notify({ type: 'error', text: error.response ? error.response.data : 'Cant update settings' })
             })
     }
 
@@ -171,10 +170,9 @@ function Settings() {
                 </div>
             </div>
             <div className="d-flex justify-content-center">
-                <Symbols notify={setNotification} />
+                <Symbols />
             </div>
         </main>
-        <Toast type={notification.type} text={notification.text} />
     </React.Fragment>)
 }
 

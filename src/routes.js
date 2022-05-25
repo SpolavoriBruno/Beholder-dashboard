@@ -9,13 +9,14 @@ import OrderTemplates from "./private/OrderTemplates/OrderTemplates"
 import Settings from "./private/Settings/Settings"
 import Monitors from "./private/Monitors/Monitors"
 import Menu from "./components/Menu/Menu"
+import Toast from "./components/Toast/Toast"
 
 function Routes() {
     function PrivateRoute({ children, ...rest }) {
         return (
             <Route {...rest} render={() => {
                 return localStorage.getItem('token')
-                    ? <><Menu />{children}</>
+                    ? <><Menu />{children}<Toast /></>
                     : <Redirect to='/' />
             }} />
         )

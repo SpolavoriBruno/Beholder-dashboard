@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from "react"
 import SelectSymbol from "../../components/SelectSymbol/SelectSymbol"
 import SwitchInput from "../../components/SwitchInput/SwitchInput"
+import { notify } from "../../components/Toast/Toast";
 import { saveMonitor, getMonitorTypes } from "../../services/MonitorService";
 import MonitorIndexes from "./MonitorIndex"
 import MonitorType from "./MonitorType"
@@ -10,7 +11,6 @@ import SelectInterval from "./SelectInterval"
  * props
  * - data
  * - onSubmit
- * - notify
  */
 function MonitorModal(props) {
     const btnClose = useRef('')
@@ -28,7 +28,7 @@ function MonitorModal(props) {
                 btnClose.current.click()
                 if (props.onSubmit) props.onSubmit(result)
             }).catch(error => {
-                props.notify({ type: 'error', text: error.response ? error.response.data : error.message })
+                notify({ type: 'error', text: error.response ? error.response.data : error.message })
                 console.error(error)
             })
     }

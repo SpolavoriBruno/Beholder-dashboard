@@ -1,11 +1,11 @@
 import React, { useEffect, useRef, useState } from "react"
+import { notify } from "../../../../components/Toast/Toast"
 
 /**
  * props:
  * - selectedIndex
  * - indexes
  * - onAdd
- * - notify
  */
 function VariableInput(props) {
     const variableRef = useRef('')
@@ -37,7 +37,7 @@ function VariableInput(props) {
 
     function onAddClick() {
         if (!index.eval || !operator || !variable) {
-            props.notify({ type: 'error', text: "Please fill in all fields" })
+            notify({ type: 'error', text: "Please fill in all fields" })
 
             return
         }

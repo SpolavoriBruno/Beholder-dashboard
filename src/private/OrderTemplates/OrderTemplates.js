@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react"
 import Pagination from "../../components/Pagination/Pagination"
 import { usePage } from "../../hooks/navigation"
 import { deleteOrderTemplate, getOrderTemplates } from "../../services/OrderTemplateService.js"
-import Toast from "../../components/Toast/Toast"
+import { notify } from "../../components/Toast/Toast"
 import OrderTemplateModal, { DEFAULT_ORDER_TEMPLATE } from "./OrderTemplateModal/OrderTemplateModal"
 import OrderTemplateRow from "./OrderTemplateRow.js"
 import SearchSymbol from "../../components/SearchSymbol/SearchSymbol"
@@ -12,7 +12,6 @@ function OrderTemplates() {
     const [count, setCount] = useState(1)
     const [orderTemplates, setOrderTemplates] = useState([])
     const [editOrderTemplate, setEditOrderTemplate] = useState(DEFAULT_ORDER_TEMPLATE)
-    const [notification, setNotification] = useState({})
     const [search, setSearch] = useState('')
 
     const [page] = usePage()
@@ -37,7 +36,7 @@ function OrderTemplates() {
             })
             .catch(error => {
                 console.error(error)
-                setNotification({ type: 'error', text: error.response ? error.response.data : error.message })
+                notify({ type: 'error', text: error.response ? error.response.data : error.message })
             })
     }
 
@@ -64,7 +63,7 @@ function OrderTemplates() {
                 setCount(result.count)
             }).catch(error => {
                 console.error(error)
-                setNotification({ type: 'error', text: error.response ? error.response.data : error.message })
+                notify({ type: 'error', text: error.response ? error.response.data : error.message })
             })
     }, [page, search])
 
@@ -106,8 +105,7 @@ function OrderTemplates() {
             </table>
             <Pagination count={count} />
         </div>
-        <OrderTemplateModal data={editOrderTemplate} onSubmit={onModalSubmit} notify={setNotification} />
-        <Toast type={notification.type} text={notification.text} />
+        <OrderTemplateModal data={editOrderTemplate} onSubmit={onModalSubmit} />
     </main>)
 }
 

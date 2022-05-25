@@ -9,7 +9,7 @@ import CandleChart from "./CandleChart"
 import NewOrderButton from "../../components/NewOrder/NewOrderButton"
 import NewOrderModal from "../../components/NewOrder/NewOrderModal"
 import SelectSymbol from "../../components/SelectSymbol/SelectSymbol"
-import Toast from "../../components/Toast/Toast"
+import { notify } from "../../components/Toast/Toast"
 
 function Dashboard() {
     const history = useHistory()
@@ -19,7 +19,6 @@ function Dashboard() {
     const [balanceState, setBalanceState] = useState({})
     const [wallet, setWallet] = useState({})
     const [chartSymbol, setChartSymbol] = useState('BTCUSDT');
-    const [notification, setNotification] = useState({})
 
     function onOrderSubmit(order) {
         history.push(`/orders/${order.symbol}`)
@@ -48,7 +47,7 @@ function Dashboard() {
         },
         onError: error => {
             console.error(error)
-            setNotification({ type: 'error', text: error.response ? error.response.data : error.message })
+            notify({ type: 'error', text: error.response ? error.response.data : error.message })
         },
         shouldReconnect: _ => true,
         reconnectInterval: 3000,
@@ -79,8 +78,7 @@ function Dashboard() {
                 <Wallet data={balanceState} onUpdate={setWallet} />
             </div>
         </main>
-        <NewOrderModal wallet={wallet} onSubmit={onOrderSubmit} notify={setNotification} />
-        <Toast type={notification.type} text={notification.text} />
+        <NewOrderModal wallet={wallet} onSubmit={onOrderSubmit} />
     </React.Fragment>)
 }
 

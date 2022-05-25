@@ -3,12 +3,12 @@ import { useHistory } from "react-router-dom"
 import { ORDER_STATUS } from '../../utils/exchange'
 import { getDate } from "../../utils/date.js"
 import { cancelOrder, syncOrder } from "../../services/OrdersService"
+import { notify } from "../../components/Toast/Toast"
 
 /** 
  * props:
  * - data
  * - onCancel
- * - notify
  */
 function ViewOrderModal(props) {
     const history = useHistory()
@@ -47,7 +47,7 @@ function ViewOrderModal(props) {
                 return history.push(`/orders/${order.symbol}`)
             })
             .catch(error => {
-                props.notify({ type: 'error', text: error.response ? error.response.data : error.message })
+                notify({ type: 'error', text: error.response ? error.response.data : error.message })
                 console.error(error)
             })
     }
@@ -67,7 +67,7 @@ function ViewOrderModal(props) {
             })
             .catch(error => {
                 setIsSyncing(false);
-                props.notify({ type: 'error', text: error.response ? error.response.data : error.message })
+                notify({ type: 'error', text: error.response ? error.response.data : error.message })
                 console.error(error)
             })
 

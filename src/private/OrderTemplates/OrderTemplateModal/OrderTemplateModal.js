@@ -3,6 +3,7 @@ import { ORDER_TYPES, STOP_TYPES } from "../../../services/ExchangeService"
 import OrderType from "../../../components/NewOrder/OrderType"
 import SelectSide from "../../../components/NewOrder/SelectSide"
 import SelectSymbol from "../../../components/SelectSymbol/SelectSymbol"
+import { notify } from "../../../components/Toast/Toast"
 import { saveOrderTemplate } from "../../../services/OrderTemplateService"
 import QuantityTemplate from "./QuantityTemplate"
 import PriceTemplate from "./PriceTemplate"
@@ -27,9 +28,8 @@ export const DEFAULT_ORDER_TEMPLATE = {
  * props:
  * - wallet
  * - onSubmit
- * - notify
  */
-function OrderTemplateModal({ wallet, notify, onSubmit, data }) {
+function OrderTemplateModal({ wallet, onSubmit, data }) {
     const btnClose = useRef('')
     const btnSave = useRef('')
 

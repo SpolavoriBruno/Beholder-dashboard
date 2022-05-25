@@ -3,7 +3,7 @@ import { useHistory } from "react-router-dom"
 import Pagination from "../../components/Pagination/Pagination"
 import { usePage } from "../../hooks/navigation"
 import { deleteMonitor, getMonitors, startMonitor, stopMonitor } from "../../services/MonitorService"
-import Toast from "../../components/Toast/Toast"
+import { notify } from "../../components/Toast/Toast"
 import MonitorModal from "./MonitorModal"
 import MonitorRow from "./MonitorRow"
 
@@ -13,7 +13,6 @@ function Monitors() {
     const [count, setCount] = useState(1)
     const [page] = usePage()
     const [monitors, setMonitors] = useState([])
-    const [notification, setNotification] = useState({})
     const [editMonitors, setEditMonitors] = useState({
         type: 'CANDLES',
         interval: '1m',
@@ -31,7 +30,8 @@ function Monitors() {
             .then(() => { history.go(0) })
             .catch(error => {
                 console.error(error)
-                setNotification({ type: 'error', text: error.response ? error.response.data : error.message })
+                notify({ type: 'error', text: error.message })
+                notify({ type: 'error', text: error.response ? error.response.data : error.message })
             })
     }
     function onStopClick(event) {
@@ -40,7 +40,7 @@ function Monitors() {
             .then(() => { history.go(0) })
             .catch(error => {
                 console.error(error)
-                setNotification({ type: 'error', text: error.response ? error.response.data : error.message })
+                notify({ type: 'error', text: error.response ? error.response.data : error.message })
             })
     }
     function onDeleteClick(event) {
@@ -49,7 +49,7 @@ function Monitors() {
             .then(() => { history.go(0) })
             .catch(error => {
                 console.error(error)
-                setNotification({ type: 'error', text: error.response ? error.response.data : error.message })
+                notify({ type: 'error', text: error.response ? error.response.data : error.message })
             })
     }
     function onModalSubmit(monitor) {
@@ -79,7 +79,7 @@ function Monitors() {
                 setCount(result.count)
             }).catch(error => {
                 console.error(error)
-                setNotification({ type: 'error', text: error.response ? error.response.data : error.message })
+                notify({ type: 'error', text: error.response ? error.response.data : error.message })
             })
     }, [page])
 
@@ -120,7 +120,6 @@ function Monitors() {
             <Pagination count={count} />
         </div>
         <MonitorModal data={editMonitors} onSubmit={onModalSubmit} />
-        <Toast type={notification.type} text={notification.text} />
     </main>)
 }
 
