@@ -1,10 +1,5 @@
 import React, { useEffect, useState } from "react"
 
-const style = {
-    overflow: 'auto',
-    'min-width': '550px',
-}
-
 export default function AutomationReports({ data }) {
 
     const [automations, setAutomations] = useState([])
@@ -14,7 +9,7 @@ export default function AutomationReports({ data }) {
         setAutomations(data)
     }, [data])
 
-    return (<div className="col mb-4" style={style}>
+    return (<div className="col mb-4">
         <div className="card border-0 shadow">
             <div className="card-header">
                 <h2 className="fs-5 fw-bold mb-0">Automations</h2>
@@ -29,15 +24,13 @@ export default function AutomationReports({ data }) {
                         </tr>
                     </thead>
                     <tbody>
-                        {
-                            Array.isArray(automations) && automations.map(item => (
-                                <tr key={`wallet/${item.name}`}>
-                                    <td className="text-gray-900">{item.name}</td>
-                                    <td className="text-gray-900">{item.executions}</td>
-                                    <td className="text-gray-900">{item.net.toFixed(2)}</td>
-                                </tr>
-                            ))
-                        }
+                        {Array.isArray(automations) && automations.map(item => (
+                            <tr key={`wallet/${item.name}`}>
+                                <td className="text-gray-900">{item.name}</td>
+                                <td className="text-gray-900">{item.executions}</td>
+                                <td className="text-gray-900">{item.net.toFixed(2)}</td>
+                            </tr>
+                        ))}
                     </tbody>
                 </table>
             </div>
