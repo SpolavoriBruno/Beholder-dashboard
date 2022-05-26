@@ -1,25 +1,22 @@
 import React, { useEffect, useState } from "react"
-import { getBalance } from "../../../services/ExchangeService"
-import "../Dashboard.css"
+import { getBalance } from "../../services/ExchangeService"
 
-export default function Wallet(props) {
+export default function Wallet({ onUpdate }) {
 
     const [balances, setBalances] = useState([])
     useEffect(() => {
         const token = localStorage.getItem('token')
         getBalance(token)
             .then(balances => {
-                props.onUpdate(balances)
+                onUpdate && onUpdate(balances)
                 setBalances(balances)
             })
             .catch(console.error)
 
-    }, [props.data])
-
-    if (!props) return (<React.Fragment></React.Fragment>)
+    }, [])
 
     return (<React.Fragment>
-        <div className="col-sm-12 col-md-6 mb-4">
+        <div className="col mb-4">
             <div className="card border-0 shadow">
                 <div className="card-header">
                     <h2 className="fs-5 fw-bold mb-0">Wallet</h2>
