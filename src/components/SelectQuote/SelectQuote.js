@@ -6,7 +6,7 @@ import React, { useState } from "react"
  * - hideFavorites
  */
 function SelectQuote({ onChange, hideFavorites, saveQuote = false }) {
-    const [defaultQuote, setDefaultQuote] = useState(getDefaultQuote())
+    const [defaultQuote, setDefaultQuote] = useState(getDefaultQuote(hideFavorites))
 
     function onQuoteChange(event) {
         onChange(event)
@@ -28,9 +28,10 @@ function SelectQuote({ onChange, hideFavorites, saveQuote = false }) {
     )
 }
 
-export function getDefaultQuote() {
-    const quote = localStorage.getItem('defaultQuote')
-    return quote && quote !== "FAVORITES" ? quote : "USDT"
+export function getDefaultQuote(hideFavorites = true) {
+    const quote = localStorage.getItem('defaultQuote') || "USDT"
+    if (hideFavorites) return quote !== "FAVORITES" ? quote : "USDT"
+    return quote
 }
 
 export function filterSymbolsName(symbols, quote) {
