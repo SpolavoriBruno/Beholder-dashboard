@@ -1,8 +1,15 @@
 import { useEffect, useState } from "react"
 import useWebSocket from "react-use-websocket"
 
+/**
+ * @param {object} Object contain text and type.
+ */
 export let notify
 
+/**
+ * @param {object} Object contain text and type.
+ * Alternatively, you can import 'notify' from same module.
+ */
 function Toast({ type, text }) {
     const DEFAULT_NOTIFICATION = {
         type: '',
