@@ -74,7 +74,7 @@ function Symbols() {
                                 <h2 className='h5 card-header'>Symbols</h2>
                             </div>
                             <div className='col'>
-                                <SelectQuote onChange={onQuoteChange} />
+                                <SelectQuote onChange={onQuoteChange} saveQuote="true" />
                             </div>
                         </div>
                     </div>
