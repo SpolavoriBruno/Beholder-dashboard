@@ -3,8 +3,8 @@ import React from "react"
 function InfoBlock({ background, title, children, value: _value, precision: _precision }) {
     function getBackGround() {
         if (!background)
-            return "icon-shape icon-shape-primary rounded me-4 me-sm-1"
-        return `icon-shape icon-shape-${background} rounded me-4 me-sm-1`
+            return "icon-shape icon-shape-primary rounded"
+        return `icon-shape icon-shape-${background} rounded`
     }
 
     function getValueText() {
@@ -22,16 +22,16 @@ function InfoBlock({ background, title, children, value: _value, precision: _pre
     }
 
     return (
-        <div className="col-md-4 col-sm-6 mb-3">
+        <div className="col my-md-0 my-2">
             <div className="card boder-0 shadow">
                 <div className="card-body">
-                    <div className="d-block d-xl-flex align-items-center">
-                        <div className="d-flex">
+                    <div className="d-block d-xl-flex">
+                        <div className="d-flex justify-content-center">
                             <div className={getBackGround()}>{children}</div>
                         </div>
-                        <div className="ms-3">
-                            <h5 className="h5 text-nowrap">{title}</h5>
-                            <h6 className="fw-bold">{getValueText()}</h6>
+                        <div className="mx-3 my-md-0 my-2  text-center">
+                            <h5 className="h5 text-nowrap mb-2">{title}</h5>
+                            <h6 className="fw-bold mb-0">{getValueText()}</h6>
                         </div>
                     </div>
                 </div>

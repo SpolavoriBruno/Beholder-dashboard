@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react"
+import "./Chartist.css"
 
 const DEFAULT_REPORT = {
     quote: "BUSD",
@@ -50,10 +51,10 @@ function LineChart({ data }) {
     }
 
     return (
-        <div className="card bg-yellow-100 border-0 shadow">
+        <div className="card bg-primary text-white border-0 shadow">
             <div className="card-header d-sm-flex flex-row align-items-center flex-0">
-                <div className="d-block mb-3 mb-sm-0">
-                    <h2 className="fs-3 fw-bold">{report.quote} {getText(report.sellVolume - report.buyVolume)}</h2>
+                <div className="d-block  mb-sm-0">
+                    <h2 className="fs-3 fw-bold my-0">{report.quote} {getText(report.sellVolume - report.buyVolume)}</h2>
                 </div>
                 <div className="d-block ms-3">
                     <div className="small">
@@ -64,7 +65,7 @@ function LineChart({ data }) {
                 </div>
             </div>
             <div className="card-body">
-                <div className="ct-chart  ct-dobleoctave">
+                <div className="ct-chart ct-double-octave">
                 </div>
             </div>
         </div >)
