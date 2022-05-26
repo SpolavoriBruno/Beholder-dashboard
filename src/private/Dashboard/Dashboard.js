@@ -4,11 +4,11 @@ import useWebSocket from "react-use-websocket"
 
 import MiniTicker from "./MiniTicker/MiniTicker"
 import BookTicker from "./BookTicker/BookTicker"
-import Wallet from "./Wallet/Wallet"
 import CandleChart from "./CandleChart"
 import NewOrderButton from "../../components/NewOrder/NewOrderButton"
 import NewOrderModal from "../../components/NewOrder/NewOrderModal"
 import SelectSymbol from "../../components/SelectSymbol/SelectSymbol"
+import Wallet from "../../components/Wallet/Wallet"
 import { notify } from "../../components/Toast/Toast"
 
 function Dashboard() {
