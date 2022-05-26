@@ -58,3 +58,28 @@ export async function syncOrder(beholderOrderId, token) {
 
     return response.data
 }
+
+function getThirtyDaysAgo() {
+    const date = new Date()
+    date.setUTCDate(date.getUTCDate() - 30)
+    date.setUTCHours(0, 0, 0, 0)
+    return date.getTime()
+}
+
+function getToday() {
+    const date = new Date()
+    return date.getTime()
+}
+
+export async function getOrdersReport(quote, startDate, endDate, token) {
+    startDate = startDate ? startDate.getTime() : getThirtyDaysAgo()
+    endDate = endDate ? endDate.getTime() : getToday()
+
+    const url = `${ORDERS_URL}reports/${quote}?startDate=${startDate}&endDate=${endDate}`
+    const headers = {
+        'authorization': token
+    }
+
+    const response = await axios.get(url, { headers })
+    return response.data
+}
