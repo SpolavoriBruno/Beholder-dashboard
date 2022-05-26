@@ -8,6 +8,7 @@ import Orders from "./private/Orders/Orders"
 import OrderTemplates from "./private/OrderTemplates/OrderTemplates"
 import Settings from "./private/Settings/Settings"
 import Monitors from "./private/Monitors/Monitors"
+import Reports from "./private/Reports/Reports"
 import Menu from "./components/Menu/Menu"
 import Toast from "./components/Toast/Toast"
 
@@ -46,6 +47,10 @@ function Routes() {
 
             <PrivateRoute path="/ordertemplates/:symbol?" >
                 <OrderTemplates />
+            </PrivateRoute>
+
+            <PrivateRoute path="/reports/:symbol?" >
+                <Reports />
             </PrivateRoute>
 
             <PrivateRoute path="/settings" >
