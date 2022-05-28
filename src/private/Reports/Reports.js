@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react"
 import DateFilter from "../../components/DateFilter/DateFilter"
 import SelectQuote, { getDefaultQuote } from "../../components/SelectQuote/SelectQuote"
-import { getOrdersReport } from "../../services/OrdersService"
+import { getDayTradeReport, getOrdersReport } from "../../services/OrdersService"
 import { notify } from "../../components/Toast/Toast"
 import LineChart from "./LineChart"
 import InfoBlock from "../../components/InfoBlock/InfoBlock"
@@ -23,9 +23,16 @@ function Reports() {
 
     useEffect(() => {
         if (!filter || !filter.symbol) return setFilter({ ...filter, symbol: getDefaultQuote() })
-
         const token = localStorage.getItem('token')
-        getOrdersReport(filter.symbol, filter.startDate, filter.endDate, token)
+
+        let promise
+
+        if (filter.startDate && filter.endDate && filter.startDate.getTime() === filter.endDate.getTime())
+            promise = getDayTradeReport(filter.symbol, filter.startDate, token)
+        else
+            promise = getOrdersReport(filter.symbol, filter.startDate, filter.endDate, token)
+
+        promise
             .then(setReport)
             .catch(error => {
                 notify(error.body ? error.body : error.message)
