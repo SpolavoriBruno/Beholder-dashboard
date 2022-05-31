@@ -5,17 +5,16 @@ import OrderType from "./OrderType"
 import QuantityInput from "./QuantityInput"
 import SelectSide from "./SelectSide"
 import SelectSymbol from "../SelectSymbol/SelectSymbol"
-import SymbolPrice from "./SymbolPrice"
-import WalletSumary from "./WalletSumary"
+import SymbolPrice from "../SimbolPrice/SymbolPrice"
+import WalletSumary from "../WalletSumary/WalletSumary"
 import { placeOrder } from "../../services/OrdersService"
 import { notify } from "../Toast/Toast"
 
 /**
  * props:
- * - wallet
  * - onSubmit
  */
-function NewOrderModal({ wallet, onSubmit }) {
+function NewOrderModal({ onSubmit }) {
     const DEFAULT_ORDER = {
         symbol: 'BTCUSTD',
         price: 0,
@@ -33,7 +32,8 @@ function NewOrderModal({ wallet, onSubmit }) {
     const [symbol, setSymbol] = useState({})
     const [book, setBook] = useState({ ask: 0, bid: 0 })
     const [order, setOrder] = useState(DEFAULT_ORDER)
-    const [isSymbolPriceVisible, setIsSymbolPriceVisible] = useState(false)
+    const [wallet, setWallet] = useState({})
+    const [isVisible, setIsVisible] = useState(false)
 
     function onInputChange(event) {
         order[event.target.id] = event.target.value
@@ -72,6 +72,7 @@ function NewOrderModal({ wallet, onSubmit }) {
     useEffect(() => {
         btnSend.current.disabled = false
 
+        if (!symbol || !order.quantity) return
         const quantity = parseFloat(order.quantity) || parseFloat(symbol.minLotSize)
 
         if (quantity < parseFloat(symbol.minLotSize)) {
@@ -102,7 +103,8 @@ function NewOrderModal({ wallet, onSubmit }) {
             total = price * quantity
         }
 
-        inputTotal.current.value = total.toFixed(8)
+        if (inputTotal.current)
+            inputTotal.current.value = total.toFixed(8)
 
         if (total < minNotional) {
             btnSend.current.disabled = true
@@ -125,13 +127,12 @@ function NewOrderModal({ wallet, onSubmit }) {
         const modal = document.getElementById('modalOrder')
 
         modal.addEventListener('hidden.bs.modal', event => {
-            setIsSymbolPriceVisible(false)
+            setIsVisible(false)
         })
         modal.addEventListener('show.bs.modal', event => {
-            setIsSymbolPriceVisible(true)
+            setIsVisible(true)
         })
-    }, [wallet])
-
+    }, [])
     return (
         <div className="modal fade" id="modalOrder" tabIndex="-1" role="dialog" aria-labelledby="modalOrderLabel" aria-hidden="true">
             <div className="modal-dialog modal-dialog-centered" role="document">
@@ -141,52 +142,50 @@ function NewOrderModal({ wallet, onSubmit }) {
                         <button type="button" ref={btnClose} className="btn-close" data-bs-dismiss="modal" aria-label="Close" />
                     </div>
                     <div className="modal-body">
-                        <div className="container">
-                            <div className="form-group row align-items-center mb-4">
-                                <div className="col-md-6">
-                                    <SelectSymbol onChange={onInputChange} label="Symbol" />
-                                </div>
-                                <div className="col-md-6">
-                                    {
-                                        isSymbolPriceVisible &&
+                        {isVisible &&
+                            <div className="container">
+                                <div className="form-group row align-items-center mb-4">
+                                    <div className="col-md-6">
+                                        <SelectSymbol onChange={onInputChange} label="Symbol" />
+                                    </div>
+                                    <div className="col-md-6">
                                         <SymbolPrice symbol={order.symbol} onChange={onPriceChange} />
-                                    }
-                                </div>
-                            </div>
-                            <WalletSumary wallet={wallet} symbol={symbol} />
-                            <div className="row mb-4">
-                                <div className="col-md-6">
-                                    <SelectSide onChange={onInputChange} side={order.side} />
-                                </div>
-                                <div className="col-md-6">
-                                    <OrderType onChange={onInputChange} type={order.type} />
-                                </div>
-                            </div>
-                            <div className="row mb-4">
-                                <div className={getOrderClasses(order.type)}>
-                                    <div className="form-group">
-                                        <label htmlFor="price">Unit Price</label>
-                                        <input type='number' className="form-control" id="price" placeholder={order.price} onChange={onInputChange} />
                                     </div>
                                 </div>
-                                <div className="col-md-6">
-                                    <QuantityInput id="quantity" text="Quantity" symbol={symbol} wallet={wallet} price={order.price} side={order.side} onChange={onInputChange} />
+                                <WalletSumary symbol={symbol} onChange={setWallet} />
+                                <div className="row mb-4">
+                                    <div className="col-md-6">
+                                        <SelectSide onChange={onInputChange} side={order.side} />
+                                    </div>
+                                    <div className="col-md-6">
+                                        <OrderType onChange={onInputChange} type={order.type} />
+                                    </div>
                                 </div>
-                            </div>
-                            <div className="row mb-4">
-                                <div className={getIcebergClasses(order.type)}>
-                                    <QuantityInput id="icebergQty" text="Iceberg Quantity" symbol={symbol} wallet={wallet} price={order.price} side={order.side} onChange={onInputChange} />
+                                <div className="row mb-4">
+                                    <div className={getOrderClasses(order.type)}>
+                                        <div className="form-group">
+                                            <label htmlFor="price">Unit Price</label>
+                                            <input type='number' className="form-control" id="price" placeholder={order.price} onChange={onInputChange} />
+                                        </div>
+                                    </div>
+                                    <div className="col-md-6">
+                                        <QuantityInput id="quantity" text="Quantity" symbol={symbol} wallet={wallet} price={order.price} side={order.side} onChange={onInputChange} />
+                                    </div>
                                 </div>
-                                <div className={getStopPriceClasses(order.type)}>
-                                    <label htmlFor="stopPrice">Stop Price</label>
-                                    <input type='number' className="form-control" id="stopPrice" placeholder={order.stopPrice} onChange={onInputChange} />
+                                <div className="row mb-4">
+                                    <div className={getIcebergClasses(order.type)}>
+                                        <QuantityInput id="icebergQty" text="Iceberg Quantity" symbol={symbol} wallet={wallet} price={order.price} side={order.side} onChange={onInputChange} />
+                                    </div>
+                                    <div className={getStopPriceClasses(order.type)}>
+                                        <label htmlFor="stopPrice">Stop Price</label>
+                                        <input type='number' className="form-control" id="stopPrice" placeholder={order.stopPrice} onChange={onInputChange} />
+                                    </div>
+                                    <div className="col-md-6">
+                                        <label htmlFor="stopPrice">Total Price</label>
+                                        <input ref={inputTotal} type='number' className="form-control" id="total" placeholder="0" disabled />
+                                    </div>
                                 </div>
-                                <div className="col-md-6">
-                                    <label htmlFor="stopPrice">Total Price</label>
-                                    <input ref={inputTotal} type='number' className="form-control" id="total" placeholder="0" disabled />
-                                </div>
-                            </div>
-                        </div>
+                            </div>}
                     </div>
                     <div className="modal-footer">
                         <button type="button" ref={btnSend} className="btn btn-sm btn-primary" onClick={onSave}>Save</button>
