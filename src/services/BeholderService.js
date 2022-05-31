@@ -23,3 +23,13 @@ export async function getAnalysisIndexes(token) {
 
     return response.data
 }
+
+export async function getMemoryIndex(symbol, index, interval, token) {
+    const headers = {
+        'authorization': token
+    }
+
+    const url = `${BEHOLDER_URL}/memory/${symbol}/${index}${interval ? '/' + interval : ''}`
+    const response = await axios.get(url, { headers })
+    return response.data
+}
