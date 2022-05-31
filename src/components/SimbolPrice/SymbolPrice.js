@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 import useWebSocket from "react-use-websocket"
 
 /**
@@ -7,15 +7,19 @@ import useWebSocket from "react-use-websocket"
  * - onChange
  */
 function SymbolPrice(props) {
-
     const [book, setBook] = useState({ ask: 0, bid: 0 })
+    const [symbol, setSymbol] = useState('')
+
+    function getBinanceWSUrl() {
+        return `${process.env.REACT_APP_BWS_URL}/${symbol.toLowerCase()}@bookTicker`
+    }
 
     const { lastJsonMessage, sendJsonMessage } = useWebSocket(getBinanceWSUrl(), {
         onOpen: () => {
-            console.info(`Connected to WS Server - ${props.symbol}`)
+            console.info(`Connected to WS Server - ${symbol}`)
             sendJsonMessage({
                 method: "SUBSCRIBE",
-                params: [`${props.symbol.toLowerCase()}@bookTicker`],
+                params: [`${symbol.toLowerCase()}@bookTicker`],
                 id: 1
             })
         },
@@ -23,20 +27,18 @@ function SymbolPrice(props) {
             if (lastJsonMessage) {
                 const book = { bid: lastJsonMessage.b, ask: lastJsonMessage.a }
                 setBook(book)
-                if (props.onChange) props.onChange(book)
+                if (typeof props.onChange === 'function') props.onChange(book)
             }
         },
         onError: console.error,
-        shouldReconnect: closeEvent => true,
+        shouldReconnect: _ => true,
         reconnectInterval: 3000,
         reconnectAttempts: 20
     })
 
-    function getBinanceWSUrl() {
-        return `${process.env.REACT_APP_BWS_URL}/${props.symbol.toLowerCase()}@bookTicker`
-    }
+    useEffect(() => setSymbol(props.symbol), [props.symbol])
 
-    if (!props.symbol) return (<></>)
+    if (!symbol) return (<></>)
 
     return (
         <div className="form-group justify-items-center">
