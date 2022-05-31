@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react"
 import { useHistory, useParams } from "react-router-dom"
 import NewOrderModal from "../../components/NewOrder/NewOrderModal"
 import NewOrderButton from "../../components/NewOrder/NewOrderButton"
-import { getBalance } from "../../services/ExchangeService"
 import { getOrders } from "../../services/OrdersService"
 import OrderRow from "./OrderRow"
 import Pagination from "../../components/Pagination/Pagination"
@@ -16,35 +15,13 @@ function Orders() {
     const { symbol } = useParams()
 
     const [count, setCount] = useState(0)
-    const [balances, setBalances] = useState({})
     const [viewOrder, setViewOrder] = useState({})
     const [orders, setOrders] = useState([])
     const [search, setSearch] = useState(symbol || '')
     const [page] = usePage()
-    function getBalancesCall(token) {
-        getBalance(token)
-            .then(balances => {
-                setBalances(balances)
-            })
-            .catch((error) => {
-                console.error(error)
-                notify({ type: 'error', text: error.response ? error.response.data : error.message })
-            })
-    }
 
-    function getOrdersCall(token) {
-        getOrders(search, page, token)
-            .then(result => {
-                setOrders(result.rows)
-                setCount(result.count)
-            })
-            .catch((error) => {
-                console.error(error)
-                notify({ type: 'error', text: error.response ? error.response.data : error.message })
-            })
-    }
 
-    function onOrderSubmit(order) {
+    function onOrderSubmit(_) {
         history.go(0)
     }
 
@@ -60,8 +37,15 @@ function Orders() {
     useEffect(() => {
         const token = localStorage.getItem("token")
 
-        getBalancesCall(token)
-        getOrdersCall(token)
+        getOrders(search, page, token)
+            .then(result => {
+                setOrders(result.rows)
+                setCount(result.count)
+            })
+            .catch((error) => {
+                console.error(error)
+                notify({ type: 'error', text: error.response ? error.response.data : error.message })
+            })
     }, [page, search])
 
     return (<React.Fragment>
@@ -92,15 +76,15 @@ function Orders() {
                         </tr>
                     </thead>
                     <tbody>
-                        {
-                            orders?.map(order => (<OrderRow key={order.clientOrderId} data={order} onClick={onViewOrderClick} />))
+                        {Array.isArray(orders) &&
+                            orders.map(order => (<OrderRow key={order.clientOrderId} data={order} onClick={onViewOrderClick} />))
                         }
                     </tbody>
                 </table>
                 <Pagination count={count} />
             </div>
         </main>
-        <NewOrderModal wallet={balances} onSubmit={onOrderSubmit} />
+        <NewOrderModal onSubmit={onOrderSubmit} />
         <ViewOrderModal data={viewOrder} />
     </React.Fragment>)
 }
