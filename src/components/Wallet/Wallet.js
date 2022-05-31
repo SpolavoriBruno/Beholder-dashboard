@@ -1,25 +1,38 @@
 import React, { useEffect, useState } from "react"
 import { getBalance } from "../../services/ExchangeService"
 
-export default function Wallet({ onUpdate }) {
+export default function Wallet({ onUpdate, forceUpdate }) {
 
     const [balances, setBalances] = useState([])
+    const [usd, setUsd] = useState(0)
+
     useEffect(() => {
         const token = localStorage.getItem('token')
         getBalance(token)
             .then(balances => {
                 onUpdate && onUpdate(balances)
+
+                const usd = balances.find(item => item.symbol === 'estimatedUSD').available
+                balances = balances.filter(item => item.symbol !== 'estimatedUSD')
+                setUsd(usd)
+
+                balances = balances.filter(balance => balance.available > 0)
                 setBalances(balances)
             })
             .catch(console.error)
 
-    }, [])
+    }, [forceUpdate])
 
     return (<React.Fragment>
         <div className="col mb-4">
             <div className="card border-0 shadow">
-                <div className="card-header">
-                    <h2 className="fs-5 fw-bold mb-0">Wallet</h2>
+                <div className="card-header row">
+                    <div className="col">
+                        <h2 className="fs-5 fw-bold mb-0">Wallet</h2>
+                    </div>
+                    <div className="col">
+                        {usd && "~USD " + usd}
+                    </div>
                 </div>
                 <div className="table-responsive divScroll">
                     <table className="table align-items-center table-flush table-sm table-hover tableFixHead">
