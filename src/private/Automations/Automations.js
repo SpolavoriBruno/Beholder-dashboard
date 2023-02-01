@@ -6,6 +6,8 @@ import { notify } from "../../components/Toast/Toast"
 import AutomationModal from "./AutomationModal/AutomationModal"
 import AutomationRow from "./AutomationRow"
 import "./Automations.css"
+import NewAutomationButton from "./NewAutomationButton"
+import GridModal from "./GridModal/GridModal"
 
 const DEFAULT_AUTOMATION = {
     name: '',
@@ -22,6 +24,11 @@ function Automations() {
     const [editAutomations, setEditAutomations] = useState(DEFAULT_AUTOMATION)
 
     const [page] = usePage()
+
+    const automationModals = [
+        { id: 'modalAutomation', name: 'Regular' },
+        { id: 'modalGrid', name: 'Grid' }
+    ]
 
     function onEditClick(event) {
         const id = event.target.id.split('/')[1]
@@ -105,12 +112,7 @@ function Automations() {
             </div>
             <div className="btn-toolbar mb-2 mb-md-0 align-items-center">
                 <div className="d-inline-flex align-items-center">
-                    <button className="btn btn-primary animate-up-2" id="btnNewAutomation" onClick={newAutomationClick} data-bs-toggle="modal" data-bs-target="#modalAutomation">
-                        <svg className="icon icon-xs" fill="none" stroke="currentColor" viewBox="3 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 14v6m-3-3h6M6 10h2a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v2a2 2 0 002 2zm10 0h2a2 2 0 002-2V6a2 2 0 00-2-2h-2a2 2 0 00-2 2v2a2 2 0 002 2zM6 20h2a2 2 0 002-2v-2a2 2 0 00-2-2H6a2 2 0 00-2 2v2a2 2 0 002 2z" />
-                        </svg>
-                        New Automation
-                    </button>
+                    <NewAutomationButton onClick={newAutomationClick} data={automationModals} />
                 </div>
             </div>
         </div>
@@ -132,7 +134,8 @@ function Automations() {
             </table>
             <Pagination count={count} />
         </div>
-        <AutomationModal data={editAutomations} onSubmit={onModalSubmit} notify={notify} />
+        <AutomationModal data={editAutomations} onSubmit={onModalSubmit} />
+        <GridModal data={editAutomations} onSubmit={onModalSubmit} />
     </main>)
 }
 

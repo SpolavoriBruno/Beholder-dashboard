@@ -3,10 +3,8 @@ import React, { useEffect, useMemo } from "react"
 function CandleChart(props) {
     useEffect(() => {
         new window.TradingView.widget({
-            width: 1200,
-            height: 700,
             symbol: `BINANCE:${props.symbol}`,
-            autosize: false,
+            autosize: true,
             interval: "1",
             timezone: "America/Sao_Paulo",
             theme: "dark",

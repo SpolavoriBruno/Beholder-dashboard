@@ -20,6 +20,11 @@
   color: #fff;
 }
 
-/* .tradingview {
-  height: 380px;
-} */
+.tradingview {
+  margin: 5px;
+  padding: 5px;
+  min-height: 320px;
+  height: 45vw;
+  max-width: 100%;
+  max-height: 100%;
+}

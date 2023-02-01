@@ -72,6 +72,8 @@ function Toast({ type, text }) {
         shouldReconnect: () => true,
         reconnectInterval: 2500,
     })
+
+    return (<></>)
 }
 
 export default Toast
